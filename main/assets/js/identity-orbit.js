@@ -54,7 +54,7 @@ async function build(){
   const mesh=new T.Mesh(new T.SphereGeometry(1.93,96,42,0,Math.PI*2,theta,span),material.clone());
   mesh.material.side=T.DoubleSide;mesh.userData.index=i;shells.add(mesh);bands.push(mesh);
   const ridge=new T.Mesh(new T.SphereGeometry(1.929,96,14,0,Math.PI*2,theta+span-.055,.042),accent);
-  shells.add(ridge);seams.push(ridge);
+  mesh.add(ridge);seams.push(ridge);
  });
  // Distinct blue illuminations inside the physical sphere gaps.
  for(const theta of [.935,1.99]){const o=new T.Mesh(new T.SphereGeometry(1.72,96,12,0,Math.PI*2,theta,.085),accent);shells.add(o)}

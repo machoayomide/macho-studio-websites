@@ -69,10 +69,10 @@ function boot(){
   const model=gltf.scene;
   model.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false}});
   const box=new T.Box3().setFromObject(model),size=new T.Vector3(),center=new T.Vector3();
-  box.getSize(size);box.getCenter(center);model.position.sub(center);
+  box.getSize(size);box.getCenter(center);
   const longest=Math.max(size.x,size.y,size.z);
   if(!Number.isFinite(longest)||longest===0)throw Error('3D model dimensions invalid');
-  const normalized=3.1/longest;model.scale.setScalar(normalized);
+  const normalized=3.1/longest;model.scale.setScalar(normalized);model.position.copy(center).multiplyScalar(-normalized);
   const holder=new T.Group();holder.add(model);pivot.add(holder);
   const turntable=new T.Mesh(new T.TorusGeometry(2.05,.009,5,100),new T.MeshBasicMaterial({color:0x91f6b8,transparent:true,opacity:.44,depthWrite:false}));turntable.rotation.x=Math.PI/2.25;turntable.position.y=-1.55;scene.add(turntable);
   const subRing=new T.Mesh(new T.TorusGeometry(2.7,.005,3,100),new T.MeshBasicMaterial({color:0x9cd7ff,transparent:true,opacity:.2,depthWrite:false}));subRing.rotation.set(.24,0,.28);scene.add(subRing);
