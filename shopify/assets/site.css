@@ -295,3 +295,8 @@ html{scroll-padding-top:92px}
 /* Responsive animation fallback for deliberately minimized WebGL load. */
 .kinetic-load-button{margin-top:9px;background:rgba(24,63,45,.9);color:#f2fff5;border:1px solid #b8fbd3aa;border-radius:40px;padding:11px 16px;letter-spacing:.08em;font-weight:800;font-size:11px;cursor:pointer}
 .kinetic-load-button:hover{background:#267a53}
+
+/* Branded, non-misleading instant poster before the authentic glTF finishes loading */
+.kinetic-fallback .kinetic-fallback-mark{display:block;width:clamp(135px,22vw,245px);height:auto;object-fit:contain;filter:drop-shadow(0 25px 50px rgba(73,119,238,.29));animation:machoPosterBreath 7s ease-in-out infinite}
+@keyframes machoPosterBreath{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-10px) rotate(6deg)}}
+@media(prefers-reduced-motion:reduce){.kinetic-fallback .kinetic-fallback-mark{animation:none}}
