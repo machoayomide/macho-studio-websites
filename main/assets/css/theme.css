@@ -198,3 +198,8 @@ body.home{background:#e9e9ed;color:#f6f4f0}
 
 /* Cloudflare Pages: optional project enquiry handoff */
 .macho-static-brief{margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}.macho-static-brief[hidden]{display:none!important}.macho-static-brief textarea{width:100%;min-height:125px;padding:1rem;border:1px solid #d3d6d9;background:#fff;color:#1d2733;border-radius:8px;font:inherit}.macho-static-brief .privacy-helper{width:100%}.contact-intro .prose a{color:inherit;text-underline-offset:.24em}
+
+/* Universal Macho Studio identity: preserve approved hero / hierarchy */
+.wordmark .studio-brand-icon{display:block;width:43px;height:31px;flex:none;object-fit:contain;filter:drop-shadow(0 4px 9px rgba(99,111,241,.17))}
+@media(max-width:600px){.wordmark .studio-brand-icon{width:36px;height:27px}}
+@media(prefers-reduced-motion:reduce){.macho-portrait-scene,.macho-word-layer,.macho-hover-word{transition:none!important;animation:none!important}}

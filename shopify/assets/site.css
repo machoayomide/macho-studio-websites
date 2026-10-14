@@ -11,3 +11,24 @@
 /* Public contact details and verified client-side enquiry handoff */
 .contact-direct{margin-top:26px;display:flex;flex-direction:column;gap:13px;border-left:2px solid var(--mint);padding:6px 0 6px 20px}.contact-direct>span{color:var(--mint);font-size:11px;letter-spacing:.17em;font-weight:800}.contact-direct a{font-size:clamp(15px,1.6vw,20px);font-weight:650;color:var(--light,#f8fff8);overflow-wrap:anywhere;text-decoration:underline;text-underline-offset:5px}.contact-direct a:hover{color:var(--mint)}.footer-contact-label{margin-top:15px;letter-spacing:.1em!important}.footer-grid a[href^="mailto:"]{overflow-wrap:anywhere}.brief-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:17px}.brief-actions .button{font-size:12px;min-height:48px}.brief-actions .button-outline{background:transparent;border:1px solid #788b7e;color:#eaf8ec;cursor:pointer}.brief-actions .button-outline:hover{background:#24382b}.brief-actions .button{white-space:normal;text-align:center}
 @media(max-width:600px){.brief-actions{flex-direction:column;align-items:stretch}.brief-actions .button{width:100%}}
+
+/* October brand refresh: one identity across all MACHO STUDIO properties */
+.site-header .brand{gap:10px;min-width:0}
+.site-header .studio-brand-icon{width:42px;height:31px;flex:none;object-fit:contain;display:block;filter:drop-shadow(0 4px 9px #6c83fe2c)}
+.site-header .brand-word{line-height:1;display:block;font-weight:850}
+.site-header .brand-lite{font-weight:400}
+.site-header .brand-specialism{display:block;margin-top:4px;font-size:8px;font-weight:850;letter-spacing:.16em;color:var(--mint)}
+/* Better paced interaction. CSS layers, not a claimed WebGL/GLB asset. */
+.commerce-universe .commerce-assembly{transition:transform .48s cubic-bezier(.2,.8,.2,1);will-change:auto}
+.commerce-universe .storefront-browser,.commerce-universe .storefront-back,.commerce-universe .float-ui{transition:transform .85s cubic-bezier(.18,.75,.16,1),opacity .65s ease,filter .65s ease}
+.commerce-universe[data-expanded="true"] .storefront-browser{transform:translate3d(-19%,0,145px) rotateY(-7deg)}
+.commerce-universe[data-expanded="true"] .storefront-back{transform:translate3d(16%,-2%, -85px) rotateY(8deg);filter:saturate(.7)}
+.commerce-universe[data-expanded="true"] .float-orders{transform:translate3d(0,-64px,180px)}
+.commerce-universe[data-expanded="true"] .float-performance{transform:translate3d(-10%,40px,90px)}
+.commerce-universe[data-expanded="true"] .float-b2b{transform:translate3d(22%,34px,160px)}
+.commerce-universe .scene-mode{position:absolute;z-index:8;bottom:5%;left:9%;border:1px solid #c6ffe788;border-radius:100px;padding:11px 17px;color:#f2fff7;background:#102a22e6;backdrop-filter:blur(12px);font:700 11px/1.3 Inter,Arial,sans-serif;letter-spacing:.05em;cursor:pointer}
+.commerce-universe .scene-mode:hover,.commerce-universe .scene-mode:focus-visible{outline:2px solid var(--mint);outline-offset:3px;background:#204733}
+.commerce-universe .scene-explain{position:absolute;bottom:0;right:8%;max-width:230px;text-align:right;font:650 10px/1.4 Inter,Arial,sans-serif;letter-spacing:.08em;color:#e3f8e9}
+.commerce-universe .scene-explain[hidden]{display:none}
+@media(max-width:650px){.site-header .studio-brand-icon{width:34px;height:28px}.site-header .brand-word{font-size:17px}.site-header .brand-specialism{font-size:7px}.commerce-universe .scene-mode{bottom:2%;left:6%;font-size:10px}.commerce-universe .scene-explain{right:6%;bottom:0;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.commerce-universe *{animation:none!important;transition:none!important}.commerce-universe .commerce-assembly{transform:none!important}}
