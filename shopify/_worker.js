@@ -66,6 +66,7 @@ async function report(request,env){
 export default {
  async fetch(request,env,ctx){
   const path=new URL(request.url).pathname;
+  if(path==="/api/activity/ready")return response({enabled:Boolean(env.ACTIVITY_LOG||(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)),storage:Boolean(env.ACTIVITY_LOG),notifications:Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)});
   if(path==="/api/activity")return event(request,env,ctx);
   if(path==="/api/activity/report")return report(request,env);
   if(path.startsWith("/api/activity/"))return response({error:"Not found"},404);

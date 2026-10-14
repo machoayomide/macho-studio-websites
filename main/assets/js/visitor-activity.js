@@ -83,6 +83,6 @@ function attachActions(){
  const form=document.querySelector('#project-form');
  if(form){const output=document.querySelector('#brief-output');if(output){new MutationObserver(()=>{if(!output.hidden)once('brief_prepared')}).observe(output,{attributes:true,attributeFilter:['hidden']})}}
 }
-function boot(){settings();attachActions();if(choice==='yes')start();else if(choice!=='no')banner()}
+async function boot(){try{const res=await fetch('/api/activity/ready',{cache:'no-store'});if(!res.ok)return;const config=await res.json();if(!config.enabled)return;settings();attachActions();if(choice==='yes')start();else if(choice!=='no')banner()}catch(e){/* No custom analytics before setup */}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
