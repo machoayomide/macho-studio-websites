@@ -9,8 +9,8 @@ const form=document.querySelector('#project-form');if(form){const selected=new U
 
 ;(()=>{document.querySelectorAll('.site-header .brand').forEach(el=>{
  const old=el.querySelector('.brand-mark');if(old){const img=document.createElement('img');img.src='/assets/brand-mark.svg';img.width=43;img.height=31;img.alt='';img.className='studio-brand-icon';old.replaceWith(img)}
- const title=el.querySelector('.brand-word');if(title){title.innerHTML='MACHO<span class="slash"> / </span><span class="brand-lite">STUDIO</span><span class="brand-dot">.</span><small class="brand-specialism">FOR SHOPIFY</small>'}
- el.setAttribute('aria-label','Macho Studio for Shopify, home')
+ const title=el.querySelector('.brand-word');if(title){title.innerHTML='MACHO<span class="brand-dot">.</span>'}
+ el.setAttribute('aria-label','MACHO home')
 });})();
 
 /* Shared site-wide navigation. Keeps all specialist routes discoverable. */
