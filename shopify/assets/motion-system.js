@@ -10,7 +10,7 @@ if(!gsap||!ScrollTrigger)return;
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ignoreMobileResize:true,autoRefreshEvents:'visibilitychange,DOMContentLoaded,load'});
 const home=document.body.classList.contains('page-home');
-const isMain=!!document.querySelector('.kinetic-hero');
+const isMain=!!document.querySelector('.header');
 const reveal=(selector,options={})=>{
  const items=[...document.querySelectorAll(selector)];
  items.forEach((el,i)=>{
@@ -24,7 +24,7 @@ if(isMain){
  const blurb=document.querySelector('.kinetic-blurb');if(blurb)gsap.from(blurb,{y:21,opacity:0,duration:1,ease:'power2.out',delay:.65,clearProps:'all'});
  const portrait=document.querySelector('.macho-portrait-art');
  if(portrait)gsap.to(portrait,{y:phone?22:68,scale:1.06,ease:'none',scrollTrigger:{trigger:'.kinetic-hero',start:'top top',end:'bottom top',scrub:1.1}});
- reveal('.intro-statement h2,.section-header h2,.about-grid h2,.footer-cta-grid h2');
+ reveal('.intro-statement h2,.section-header h2,.about-grid h2,.footer-cta-grid h2,.page-hero h1,.case-hero h1,.page-title,.section h2');
  reveal('.process-grid > *, .home-case-grid > *, .recognition-band .disciplines');
  const expertise=[...document.querySelectorAll('.expertise-row')];
  expertise.forEach((el,i)=>{
