@@ -407,3 +407,36 @@ html{scroll-padding-top:92px}
 .commerce-real-model .kinetic-hotspot{pointer-events:none}
 .commerce-real-model .kinetic-stage-controls,.commerce-real-model .kinetic-asset-credit{pointer-events:none}
 .commerce-real-model .kinetic-stage-controls button,.commerce-real-model .kinetic-asset-credit a{pointer-events:auto}
+
+/* MACHO Services — editorial card index and searchable 83-capability discovery */
+.services-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:35px}
+.service-feature-card{min-height:280px;padding:clamp(22px,2.7vw,34px);border:1px solid #c6d8c7;background:#fff;border-radius:17px;display:flex;flex-direction:column;gap:16px;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+.service-feature-card:hover,.service-feature-card:focus-visible{transform:translateY(-5px);border-color:#479e72;box-shadow:0 20px 60px #1a492414}
+.service-feature-top{display:flex;justify-content:space-between;align-items:center;color:#25784f}
+.service-feature-num{font-size:12px;letter-spacing:.12em;font-weight:800}
+.service-feature-symbol{display:grid;place-items:center;width:55px;height:55px;border:1px solid #c7e3cf;border-radius:50%;background:#e9f7ef;font-size:30px;font-weight:400}
+.service-feature-card h3{font-size:clamp(24px,2.5vw,35px);letter-spacing:-.05em;line-height:1.13;margin:5px 0 0}
+.service-feature-card>p{color:#53695b;font-size:15px;line-height:1.53;flex:1}
+.service-feature-footer{border-top:1px solid #dce6dd;padding-top:17px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.08em;font-weight:850;color:#216c4c}
+.service-feature-footer span:last-child{font-size:18px}
+.capabilities-section{background:#0c2017;color:#f6fff7;padding:clamp(75px,8vw,125px) 0}
+.capabilities-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:40px}
+.capabilities-head h2{font-size:clamp(45px,5.6vw,88px);line-height:1.02;letter-spacing:-.075em;margin:16px 0}
+.capabilities-head h2 em{font-family:Georgia,serif;color:#a2eac4;font-weight:400}
+.capabilities-head p{font-size:18px;line-height:1.55;color:#b8d4c0;max-width:820px}
+.capabilities-head>.button{flex-shrink:0}
+.capabilities-toolbar{display:grid;grid-template-columns:2fr 1fr;gap:15px;background:#183427;border:1px solid #94bda048;border-radius:13px;padding:20px}
+.capabilities-toolbar label{font-weight:800;font-size:11px;letter-spacing:.1em;display:block;color:#c6e6d1}
+.capabilities-toolbar input,.capabilities-toolbar select{width:100%;background:#0d2419;border:1px solid #8cbaa27a;color:#f2fff5;border-radius:9px;font:500 15px/1.4 Inter,Arial,sans-serif;padding:13px 15px;margin-top:10px}
+.capabilities-toolbar input::placeholder{color:#91b6a0}
+.capabilities-results{font-size:12px;color:#a3d9b4;letter-spacing:.11em;margin:24px 0 17px;font-weight:700}
+.capabilities-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.capability-card{padding:22px;min-height:175px;border:1px solid #678f7960;border-radius:12px;background:#172f23;display:flex;flex-direction:column;gap:13px;transition:background .2s,border-color .2s,transform .2s}
+.capability-card:hover{background:#234a32;border-color:#9fe8b6;transform:translateY(-3px)}
+.capability-category{font-size:10px;letter-spacing:.10em;font-weight:750;text-transform:uppercase;color:#a0d2b3}
+.capability-card h3{font-size:clamp(17px,1.4vw,22px);font-weight:700;letter-spacing:-.035em;line-height:1.18;flex:1}
+.capability-arrow{color:#a7f0c1;font-size:10px;letter-spacing:.08em;font-weight:900;margin-top:auto}
+.capability-empty{grid-column:1/-1;padding:40px 0;color:#b9d8c6}
+.capabilities-footnote{color:#a8c5b1;font-size:12px;line-height:1.65;max-width:860px;margin-top:28px}
+@media(max-width:1060px){.services-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.capabilities-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.capabilities-head{align-items:start;flex-direction:column}}
+@media(max-width:700px){.services-feature-grid,.capabilities-grid,.capabilities-toolbar{grid-template-columns:1fr}.service-feature-card{min-height:225px}.capabilities-section{padding:65px 0}.capabilities-head h2{font-size:45px}.capabilities-head>.button{width:100%;text-align:center}.capability-card{min-height:130px}.capability-card h3{font-size:22px}}
