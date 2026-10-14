@@ -47,3 +47,6 @@ document.querySelectorAll('.footer-brand').forEach(el=>{el.innerHTML='MACHO<span
  const start=()=>{if('requestIdleCallback' in window)requestIdleCallback(go,{timeout:1200});else setTimeout(go,200)};
  if(document.readyState==='complete')start();else addEventListener('load',start,{once:true});
 })();
+
+/* Optional visitor activity notifications — same privacy design across MACHO sites. */
+;(()=>{const s=document.createElement('script');s.defer=true;s.src='/assets/js/visitor-activity.js';document.head.append(s)})();

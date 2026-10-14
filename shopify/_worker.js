@@ -34,7 +34,7 @@ async function event(request,env,ctx){
  const allowedDetail=["step","service","source","channel"];
  const details={};for(const k of allowedDetail){if(typeof input[k]==="string")details[k]=safe(input[k],55)}
  const country=safe(request.cf?.country||"Unknown",4);
- const record={event:input.type,label:EVENTS[input.type],id:crypto.randomUUID(),time:new Date().toISOString(),session:sid.slice(0,12),view:view.slice(0,12),page:path,device:device(request.headers.get("User-Agent")||""),country,details};
+ const record={event:input.type,label:EVENTS[input.type],id:crypto.randomUUID(),time:new Date().toISOString(),session:sid.slice(0,12),view:view.slice(0,12),page:path,device:device(request.headers.get("User-Agent")||""),country,site:new URL(request.url).hostname,details};
  if(!env.ACTIVITY_LOG&&!env.TELEGRAM_BOT_TOKEN)return response({ok:false,configured:false,error:"Activity backend not configured"},503);
  const jobs=[];
  if(env.ACTIVITY_LOG){const key="e:"+(9999999999999-Date.now()).toString().padStart(13,"0")+":"+record.id; jobs.push(env.ACTIVITY_LOG.put(key,JSON.stringify(record),{expirationTtl:60*60*24*7}))}
@@ -42,7 +42,7 @@ async function event(request,env,ctx){
   const body="<b>"+labelSafe(record.label)+"</b>\n"+
    "🕒 "+labelSafe(record.time)+"\n"+
    "🔖 "+labelSafe(record.session)+" / "+labelSafe(record.view)+"\n"+
-   "📄 "+labelSafe(record.page)+"\n"+
+   "🏠 "+labelSafe(record.site)+"\n"+"📄 "+labelSafe(record.page)+"\n"+
    "📱 "+labelSafe(record.device)+" · 🌍 "+labelSafe(record.country)+"\n"+
    Object.entries(details).map(([k,v])=>"• "+labelSafe(k)+": "+labelSafe(v)).join("\n")+
    "\n<i>Anonymous activity · not a confirmed lead or sale</i>";
