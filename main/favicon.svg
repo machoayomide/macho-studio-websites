@@ -1,12 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 92" role="img" aria-labelledby="t"><title id="t">Macho Studio mark</title>
-<defs>
-<linearGradient id="silver" x1=".08" y1="0" x2=".95" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".47" stop-color="#f3f5ff"/><stop offset="1" stop-color="#a8b9ff"/></linearGradient>
-<linearGradient id="lilac" x1="0" y1=".15" x2="1" y2=".9"><stop offset="0" stop-color="#f5f6ff"/><stop offset=".55" stop-color="#b6bbff"/><stop offset="1" stop-color="#738cff"/></linearGradient>
-<linearGradient id="shade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9aafff"/><stop offset="1" stop-color="#eef1ff"/></linearGradient>
-</defs>
-<path d="M5 80 45 16Q50 8 58 8H77Q80 8 78 12L40 80Z" fill="url(#silver)"/>
-<path d="M42 80 82 16Q87 8 95 8H111L73 80Z" fill="url(#lilac)"/>
-<path d="M90 8H111Q115 8 118 14L140 80H100L81 38Z" fill="url(#shade)"/>
-<path d="M78 12 84 21 45 80H40Z" fill="#6376d1" opacity=".55"/>
-<path d="m99 80-18-42 9-16 28 58Z" fill="#485287" opacity=".28"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 540" role="img" aria-labelledby="title"><title id="title">Macho Studio ribbon monogram</title><defs><linearGradient id="first" x1="20%" y1="0%" x2="60%" y2="100%"><stop stop-color="#ffffff"/><stop offset=".5" stop-color="#f2f3ff"/><stop offset="1" stop-color="#819dff"/></linearGradient><linearGradient id="second" x1="15%" y1="5%" x2="62%" y2="100%"><stop stop-color="#fff"/><stop offset=".55" stop-color="#c9ceff"/><stop offset="1" stop-color="#7a87f9"/></linearGradient><linearGradient id="third" x1="0%" y1="15%" x2="100%" y2="90%"><stop stop-color="#202b52"/><stop offset=".54" stop-color="#777db1"/><stop offset="1" stop-color="#f6f7ff"/></linearGradient></defs><path fill="url(#first)" d="M95 470 321 143 Q360 82 409 82 H559 L374 371 Q311 470 229 470Z"/><path fill="url(#second)" d="M334 470 566 139 Q603 82 650 82 H795 L602 376 Q540 470 472 470Z"/><path fill="url(#third)" d="M795 82 1000 470 H849 Q803 470 767 426 L679 267Z"/></svg>
