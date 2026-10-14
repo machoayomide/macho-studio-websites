@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><title>MACHO · Private Visitor Activity</title><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><style>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:#0d1c16;color:#eaf9ed;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit}
+.shell{max-width:1450px;margin:auto;padding:30px 24px 70px}
+header{display:flex;align-items:center;gap:18px;padding:0 0 22px;border-bottom:1px solid #4c6d5d8a}
+header img{width:52px;height:52px}header h1{font-size:26px;margin:0;letter-spacing:-.05em}header p{font-size:12px;letter-spacing:.09em;color:#a7c6ad;margin:4px 0}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.status{border:1px solid #708f78;padding:8px 13px;border-radius:30px;font-size:12px}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;padding:50px 0}
+.hero h2{font-size:clamp(39px,5vw,70px);letter-spacing:-.07em;line-height:1.04;margin:0 0 15px}
+.hero h2 em{font-family:Georgia,serif;color:#a2eac4;font-weight:400}
+.hero p{line-height:1.6;color:#b4d2bf;max-width:550px}
+.login{background:#163425;padding:28px;border:1px solid #6d9980a6;border-radius:15px}
+.login label{display:block;font-weight:800;font-size:12px;letter-spacing:.07em}
+.login input{display:block;width:100%;margin:10px 0 16px;background:#0a1e13;color:#fff;border:1px solid #81b894;border-radius:8px;padding:15px}
+.btn{background:#a2eac4;color:#102416;border:0;border-radius:10px;padding:13px 18px;font-weight:850}
+.btn-secondary{background:transparent;color:#d6f3df;border:1px solid #769e83}
+.btn:focus-visible,.btn-secondary:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.error{color:#f4a5a2;font-size:13px;margin-top:14px}
+.dashboard[hidden],.hero[hidden]{display:none}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:28px 0}
+.metric{padding:24px;background:#173226;border:1px solid #5d8a6960;border-radius:13px}.metric strong{font-size:44px;letter-spacing:-.07em;display:block;line-height:1.1}.metric span{font-size:12px;color:#a7d3bb}
+.dashboard-note{font-size:13px;color:#adc6b4;line-height:1.6}
+.dashboard-controls{display:flex;align-items:center;flex-wrap:wrap;gap:11px;margin:25px 0}
+.dashboard-controls input,.dashboard-controls select{background:#173226;color:white;border:1px solid #60886d;border-radius:8px;padding:12px;min-height:45px}
+.dashboard-controls input{min-width:230px;flex:1}.dashboard-controls button{min-height:44px}
+.layout{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+.event-feed{border:1px solid #67907880;border-radius:14px;background:#11251a;padding:18px}
+.event-feed h2{font-size:22px;letter-spacing:-.045em;margin:8px 0 20px}
+.feed-list{display:flex;flex-direction:column;gap:11px;max-height:75vh;overflow:auto;padding-right:4px}
+.event{border:1px solid #385f47;background:#193426;padding:17px 18px;border-radius:13px}
+.event.top{border-color:#6cbe85;background:#1c452f}
+.event-header{display:flex;gap:12px;align-items:start}.event-icon{font-size:25px}.event-header h3{font-size:16px;margin:0 0 6px}.event-header time{margin-left:auto;font-size:11px;color:#b1cdb7;white-space:nowrap}
+.event-data{font-size:12px;color:#b5d2be;line-height:1.6;margin-top:8px}
+.event-data span{display:inline-block;padding:4px 8px;background:#1f5234;border-radius:6px;margin:3px 5px 0 0}
+.aside{background:#173124;padding:21px;border:1px solid #61886d88;border-radius:14px}
+.aside h3{font-size:19px;margin:0 0 12px}.aside p{font-size:13px;color:#b0d4bf;line-height:1.5}
+.aside dl{margin:20px 0}.aside dl div{padding:12px 0;border-top:1px solid #61886d68;display:flex;justify-content:space-between;font-size:13px}.aside dt{color:#b6d8c3}.aside dd{margin:0;font-weight:800}
+.smallprint{margin-top:32px;font-size:11px;color:#91b09a}
+@media(max-width:900px){.hero,.layout{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.shell{padding:15px 14px}.metrics{grid-template-columns:1fr 1fr}.metric{padding:16px}.metric strong{font-size:32px}header{align-items:start}.event-header{flex-wrap:wrap}.event-header time{margin-left:38px}.dashboard-controls input{min-width:100%}}
+</style></head><body><div class="shell"><header><img src="/assets/brand-mark.svg" alt=""><div><h1>MACHO<span style="color:#a2eac4">.</span></h1><p>PRIVATE VISITOR ACTIVITY · SHOPIFY</p></div><div class="header-right"><span class="status" id="connection-status">Not connected</span></div></header>
+<section class="hero" id="login-screen"><div><h2>Know what happens<br><em>after the click.</em></h2><p>Your private activity inbox for consenting visitors: pages viewed, returning sessions, Store Check progress, recommendations reached and contact intent. No visitor names or Shopify sales answers are collected.</p><p>Enter the dashboard key configured in Cloudflare. The key stays in this browser tab's memory; it is not saved in local storage.</p></div><form class="login" id="login-form"><label for="secret">YOUR DASHBOARD ACCESS KEY</label><input id="secret" type="password" required autocomplete="off" placeholder="Cloudflare ADMIN_DASHBOARD_KEY"><button class="btn" type="submit">OPEN MY ACTIVITY FEED ↗</button><p class="error" id="login-error" role="alert"></p></form></section>
+<main class="dashboard" id="dashboard" hidden><div class="metrics" id="metrics"><div class="metric"><strong id="metric-visits">0</strong><span>Page views in recent feed</span></div><div class="metric"><strong id="metric-starts">0</strong><span>Store Checks started</span></div><div class="metric"><strong id="metric-completed">0</strong><span>Store Checks completed</span></div><div class="metric"><strong id="metric-contact">0</strong><span>Contact-intent events</span></div></div>
+<p class="dashboard-note">Events shown are anonymous and limited to the most recent 120 stored records (up to seven days with KV storage). “WhatsApp clicked” means a handoff was opened—not that someone messaged you or purchased.</p>
+<div class="dashboard-controls"><input id="search" type="search" placeholder="Search session, event, page or country…" aria-label="Search activity"><select id="kind" aria-label="Filter event type"><option value="all">All activities</option><option value="page_view">Page views</option><option value="returning_visit">Returning visits</option><option value="store_check_start">Store Check started</option><option value="store_check_step">Quiz progress</option><option value="store_check_complete">Store Check completed</option><option value="whatsapp_click">WhatsApp clicked</option><option value="email_click">Email clicked</option><option value="brief_prepared">Project brief prepared</option></select><button id="refresh" class="btn">REFRESH ↻</button><button id="automatic" class="btn btn-secondary" aria-pressed="true">AUTO: ON</button><button id="logout" class="btn btn-secondary">LOCK</button></div>
+<div class="layout"><section class="event-feed"><h2>Recent activity</h2><div id="feed" class="feed-list" role="feed" aria-label="Visitor activity"></div></section><aside class="aside"><h3>Notification channels</h3><p id="channels"></p><h3>Recent funnel</h3><dl id="funnel"></dl><p>This view requires an <b>ACTIVITY_LOG</b> KV binding. Chat notifications require Telegram bot credentials in Cloudflare environment secrets. An alert feed is not a customer database.</p></aside></div></main>
+<p class="smallprint">Private operations interface. Do not share your dashboard access key. Disable activity tracking in visitor preferences at any time.</p></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+let access='',events=[],auto=true,timer=0,lastData=null;
+const labels={page_view:'👁',returning_visit:'🔁',time_30s:'⏱',time_120s:'⏱',scroll_50:'📜',scroll_90:'📜',store_check_start:'🧭',store_check_step:'🧭',store_check_complete:'✅',store_check_restart:'🔁',service_view:'🛠',service_click:'🛠',contact_open:'💬',brief_prepared:'📝',whatsapp_click:'📱',email_click:'✉',assessment_handoff:'📋',copy_report:'📑'};
+const format=time=>{const date=new Date(time);return Number.isNaN(date.getTime())?time:date.toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'})};
+async function reload(){if(!access)return;try{const res=await fetch('/api/activity/report',{headers:{Authorization:'Bearer '+access},cache:'no-store'});
+ const data=await res.json();if(!res.ok)throw Error(data.error||'Could not load events');
+ lastData=data;events=data.events||[];$('connection-status').textContent='Connected · '+events.length+' records';
+ $('channels').textContent=(data.telegram?'Telegram notifications configured':'Telegram not yet configured')+' · '+(data.storage?'Cloudflare KV enabled':'Cloudflare KV missing');$('login-error').textContent='';
+ $('login-screen').hidden=true;$('dashboard').hidden=false;draw();
+ }catch(e){$('connection-status').textContent='Connection failed';$('login-error').textContent=e.message;if(!$('dashboard').hidden){$('channels').textContent='Connection error: '+e.message}}}
+function draw(){
+ const count=type=>events.filter(e=>e.event===type).length;
+ $('metric-visits').textContent=count('page_view');$('metric-starts').textContent=count('store_check_start');
+ $('metric-completed').textContent=count('store_check_complete');$('metric-contact').textContent=['whatsapp_click','email_click','brief_prepared','assessment_handoff'].reduce((n,x)=>n+count(x),0);
+ const search=$('search').value.toLowerCase(),kind=$('kind').value,feed=$('feed');feed.replaceChildren();
+ const selection=events.filter(e=>(kind==='all'||e.event===kind)&&(!search||[e.session,e.page,e.country,e.label,e.device].join(' ').toLowerCase().includes(search)));
+ for(const e of selection){const card=document.createElement('article');card.className='event'+(['store_check_complete','whatsapp_click','brief_prepared'].includes(e.event)?' top':'');card.setAttribute('aria-label',e.label);
+ const header=document.createElement('div');header.className='event-header';const icon=document.createElement('span');icon.className='event-icon';icon.textContent=labels[e.event]||'•';
+ const h=document.createElement('h3');h.textContent=e.label||e.event;const time=document.createElement('time');time.dateTime=e.time;time.textContent=format(e.time);header.append(icon,h,time);
+ const info=document.createElement('div');info.className='event-data';
+ const add=(label,value)=>{const sp=document.createElement('span');sp.textContent=label+': '+value;info.append(sp)};
+ add('Session',e.session);add('Page',e.page);add('Device',e.device||'Unknown');add('Country',e.country||'Unknown');
+ for(const [k,v] of Object.entries(e.details||{}))add(k,v);
+ card.append(header,info);feed.append(card)}
+ if(!selection.length){const p=document.createElement('p');p.textContent='No matching activity yet.';feed.append(p)}
+ $('funnel').replaceChildren();
+ for(const [label,id] of [['Page views','page_view'],['Store Checks started','store_check_start'],['Store Checks finished','store_check_complete'],['Enquiry handoffs','assessment_handoff'],['WhatsApp clicked','whatsapp_click'],['Email clicked','email_click']]){
+ const d=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=count(id);d.append(dt,dd);$('funnel').append(d)}
+}
+$('login-form').addEventListener('submit',e=>{e.preventDefault();access=$('secret').value.trim();$('secret').value='';reload();if(!timer){timer=setInterval(()=>{if(auto&&document.visibilityState==='visible')reload()},20000)}});
+$('refresh').onclick=reload;$('search').oninput=draw;$('kind').onchange=draw;
+$('automatic').onclick=()=>{auto=!auto;$('automatic').textContent=auto?'AUTO: ON':'AUTO: OFF';$('automatic').setAttribute('aria-pressed',String(auto))};
+$('logout').onclick=()=>{access='';events=[];$('dashboard').hidden=true;$('login-screen').hidden=false;$('connection-status').textContent='Locked'};
+})();
+</script></body></html>
