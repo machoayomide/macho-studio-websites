@@ -399,3 +399,11 @@ html{scroll-padding-top:92px}
 .assessment-carry details{margin:12px 0;font-size:12px;color:#21593a}
 .assessment-carry pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.65 monospace;background:#fff;padding:15px;border-radius:7px;max-height:260px;overflow:auto}
 @media(max-width:800px){.store-check-promo .layout-wrap{grid-template-columns:1fr}.store-check-promo-visual{height:200px;opacity:.6}.audit-orbit span{font-size:170px}.audit-caption{display:none}}
+
+/* Hosted, licensed 3D shopping bag — not the old cup */
+.commerce-real-model iframe.kinetic-shopping-bag-frame{position:absolute;inset:0;width:100%;height:100%;z-index:3;border:0;background:transparent;opacity:0;transition:opacity .6s}
+.commerce-real-model.model-ready iframe.kinetic-shopping-bag-frame{opacity:1}
+.commerce-real-model.model-ready .kinetic-fallback{opacity:0;visibility:hidden}
+.commerce-real-model .kinetic-hotspot{pointer-events:none}
+.commerce-real-model .kinetic-stage-controls,.commerce-real-model .kinetic-asset-credit{pointer-events:none}
+.commerce-real-model .kinetic-stage-controls button,.commerce-real-model .kinetic-asset-credit a{pointer-events:auto}
