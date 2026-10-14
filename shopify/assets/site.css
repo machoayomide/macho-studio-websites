@@ -236,3 +236,8 @@ html{scroll-padding-top:92px}
 .commerce-universe:focus-visible{outline:3px solid #a2eac4;outline-offset:-5px}
 @media(max-width:620px){.commerce-universe .webgl-controls{left:3%;right:3%;bottom:6%;gap:6px}.commerce-universe .webgl-btn{font-size:9px;padding:10px 11px;min-height:36px}.commerce-universe .webgl-status{font-size:8px;right:2%;top:5%}}
 @media(prefers-reduced-motion:reduce){.commerce-universe .webgl-canvas,.commerce-universe .webgl-btn{transition:none!important;animation:none!important}.commerce-universe .orbit-spark{animation:none!important}}
+
+/* Replace large blurred glow with composited radial gradients during WebGL animation */
+.commerce-universe.webgl-ready:before{filter:none;background:radial-gradient(ellipse at center,rgba(89,216,145,.21) 0%,rgba(71,162,114,.10) 43%,transparent 72%)}
+.commerce-universe.webgl-ready .model-legend{opacity:.65}
+@media(max-width:760px){.site-header:before{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(10,24,17,.96)}}

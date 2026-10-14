@@ -20,7 +20,7 @@ const pause=document.createElement('button');pause.type='button';pause.className
 const status=document.createElement('span');status.className='webgl-status';status.setAttribute('aria-live','polite');status.textContent='3D storefront concept';
 panel.append(explore,pause);stage.append(panel,status);
 let expanded=false,paused=false,model=null,started=false,visible=false,failed=false;
-const updateExpanded=()=>{explore.setAttribute('aria-pressed',String(expanded));explore.textContent=expanded?'CLOSE STORE LAYERS ↖':'EXPLORE STORE LAYERS ↗';stage.dataset.expanded=String(expanded);model?.setExpanded(expanded)};
+const updateExpanded=()=>{explore.setAttribute('aria-pressed',String(expanded));explore.textContent=expanded?'CLOSE STORE LAYERS ↖':'EXPLORE STORE LAYERS ↗';stage.dataset.expanded=String(expanded);model?.setExpanded(expanded);status.textContent=expanded?'Storefront, checkout and stock layers separated':'3D storefront concept'};
 explore.addEventListener('click',()=>{expanded=!expanded;updateExpanded()});
 pause.addEventListener('click',()=>{paused=!paused;pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'RESUME MOTION':'PAUSE MOTION';model?.setPaused(paused)});
 const staticStatus=(message)=>{status.textContent=message;stage.classList.add('webgl-fallback');pause.hidden=true};
@@ -149,7 +149,7 @@ function build(T){
  }
  function schedule(){if(disposed)return;if(raf)cancelAnimationFrame(raf);raf=0;prev=0;if(show&&!document.hidden)raf=requestAnimationFrame(draw)}
  function dragStart(e){if(e.target.closest('button,a'))return;mouseDown=true;downX=e.clientX;downY=e.clientY;stage.setPointerCapture?.(e.pointerId);stage.classList.add('is-grabbing')}
- function dragMove(e){if(!mouseDown)return;const rect=stage.getBoundingClientRect();yawTarget=limit(yawTarget+(e.clientX-downX)/Math.max(280,rect.width)*1.4,-.65,.65);pitchTarget=limit(pitchTarget+(e.clientY-downY)/Math.max(250,rect.height)*.8,-.22,.22);downX=e.clientX;downY=e.clientY;if(halt)renderer.render(scene,camera)}
+ function dragMove(e){if(!mouseDown)return;const rect=stage.getBoundingClientRect();yawTarget=limit(yawTarget+(e.clientX-downX)/Math.max(280,rect.width)*1.4,-.65,.65);pitchTarget=limit(pitchTarget+(e.clientY-downY)/Math.max(250,rect.height)*.8,-.22,.22);downX=e.clientX;downY=e.clientY;if(halt){yaw=yawTarget;pitch=pitchTarget;root.rotation.y=-.09+yaw;root.rotation.x=pitch;renderer.render(scene,camera)}}
  function dragEnd(){mouseDown=false;stage.classList.remove('is-grabbing')}
  function keyboard(e){const delta={ArrowLeft:[-.13,0],ArrowRight:[.13,0],ArrowUp:[0,-.10],ArrowDown:[0,.10]};if(delta[e.key]){e.preventDefault();yawTarget=limit(yawTarget+delta[e.key][0],-.65,.65);pitchTarget=limit(pitchTarget+delta[e.key][1],-.22,.22);schedule()}else if(e.key==='Home'){e.preventDefault();yawTarget=0;pitchTarget=0;schedule()}}
  stage.addEventListener('pointerdown',dragStart);stage.addEventListener('pointermove',dragMove);stage.addEventListener('pointerup',dragEnd);stage.addEventListener('pointercancel',dragEnd);stage.addEventListener('lostpointercapture',dragEnd);stage.addEventListener('keydown',keyboard);
