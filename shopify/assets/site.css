@@ -440,3 +440,24 @@ html{scroll-padding-top:92px}
 .capabilities-footnote{color:#a8c5b1;font-size:12px;line-height:1.65;max-width:860px;margin-top:28px}
 @media(max-width:1060px){.services-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.capabilities-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.capabilities-head{align-items:start;flex-direction:column}}
 @media(max-width:700px){.services-feature-grid,.capabilities-grid,.capabilities-toolbar{grid-template-columns:1fr}.service-feature-card{min-height:225px}.capabilities-section{padding:65px 0}.capabilities-head h2{font-size:45px}.capabilities-head>.button{width:100%;text-align:center}.capability-card{min-height:130px}.capability-card h3{font-size:22px}}
+
+/* MACHO Store Check — evidence-led report, never a made-up diagnosis */
+.check-diagnostic{display:grid;gap:18px;margin:15px 0 40px}
+.check-diagnostic-intro h3{font-size:clamp(27px,3.6vw,49px);line-height:1.08;letter-spacing:-.05em;margin:15px 0}
+.check-diagnostic-intro h3 em{font-family:Georgia,serif;color:#277d54;font-weight:400}
+.check-diagnostic-intro p{font-size:16px;color:#597261;line-height:1.6;max-width:800px}
+.check-issues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.check-issue{padding:23px;background:#f1f8f1;border:1px solid #c4dfcc;border-radius:13px;display:flex;flex-direction:column;gap:10px}
+.check-issue-num{font-size:11px;letter-spacing:.14em;color:#32815a;font-weight:850}
+.check-issue h4{font-size:22px;letter-spacing:-.035em;line-height:1.15;color:#153b27}
+.check-issue p{font-size:14px;line-height:1.55;color:#416451}
+.check-issue p.check-verify{margin-top:auto;border-top:1px solid #c5dfce;padding-top:10px;color:#27623e;font-weight:650}
+.check-snapshot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.check-snapshot>div{padding:17px 19px;border:1px solid #d8e8dc;background:#fafcf9;border-radius:10px}
+.check-snapshot dt{color:#657e6d;font-size:12px;font-weight:650;line-height:1.4}
+.check-snapshot dd{margin:7px 0 0;font-size:17px;line-height:1.4;font-weight:750;color:#1c4630}
+.check-expert{display:grid;grid-template-columns:90px 1fr;gap:25px;padding:32px;background:#183b2a;border-radius:15px;color:#f3fff7}
+.check-expert-symbol{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;background:#346c4e;border:1px solid #93e4b1;font-size:43px}
+.check-expert h3{font-size:clamp(26px,3.2vw,42px);letter-spacing:-.045em;line-height:1.12;margin:12px 0 15px}
+.check-expert p{line-height:1.6;color:#d4ead9}
+@media(max-width:700px){.check-issues,.check-snapshot{grid-template-columns:1fr}.check-expert{grid-template-columns:1fr;padding:24px}.check-expert-symbol{height:54px;width:54px;font-size:32px}}

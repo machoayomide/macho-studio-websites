@@ -90,8 +90,44 @@ function evaluate(){
 }
 function safeText(v){return String(v??'').replace(/[<>&]/g,'').slice(0,400)}
 function summary(recs){return 'MACHO STORE CHECK — SELF-REPORTED ASSESSMENT\n'+questions.map(q=>q.heading+'\n'+(q.multiple?(answers[q.id]||[]).map(v=>q.options.find(o=>o[0]===v)?.[1]).join(', '):q.options.find(o=>o[0]===answers[q.id])?.[1]||'Not answered')).join('\n\n')+'\n\nSuggested areas to investigate (not a completed audit):\n'+recs.map((x,i)=>(i+1)+'. '+x.name+' — '+x.reason).join('\n')+'\n\nSource: customer answers, not verified Shopify analytics.'}
+
+function buildReport(){
+ const notes=[],age=answers.age,mobile=answers.mobile,buy=answers.salesJourney,ops=answers.operations;
+ const add=(label,observation,verify)=>notes.push({label,observation,verify});
+ if(age==='not-live')add('Store launch readiness','Your store is not live yet. Before spending heavily on marketing, check the basic buying journey, product data, shipping, policies and mobile layout.','Launch checklist, test orders, product/collection setup and mobile checkout');
+ else if(age==='new')add('Early-stage fundamentals','Your store is relatively new. Gathering reliable analytics and improving basic customer trust may be more useful than a complete redesign.','Analytics setup, product-page clarity, traffic source mix and customer questions');
+ else if(age==='mature')add('Established-store opportunities','You have an established store. Theme updates, old integrations and catalog structure may deserve a periodic review.','Theme version, app inventory, analytics trends and checkout compatibility');
+ if(mobile==='slow'||mobile==='both')add('Reported mobile slowness','You reported slow mobile loading. That could involve images, scripts, third-party apps or the theme, but the cause is not established.','Core Web Vitals, mobile network waterfall, media loading and app scripts');
+ if(mobile==='awkward'||mobile==='both')add('Reported mobile shopping friction','Your mobile layout or navigation may be making it harder for shoppers to browse or choose products.','Real-device navigation, search, product cards, readability and add-to-cart');
+ if(mobile==='unsure')add('Unmeasured mobile experience','You have not checked your store on mobile. Most storefront decisions should include real phone testing.','Mobile speed, layout and purchase test on a representative device');
+ if(buy==='no-convert')add('Visitors may not be buying','You indicated that visitors arrive but few purchase. That alone does not establish why; product fit, pricing, trust, shipping and checkout could all matter.','Verified traffic, add-to-cart rate, conversion funnel and customer feedback');
+ if(buy==='abandon')add('Reported cart or checkout drop-off','You reported abandoned carts or incomplete checkouts. The cause could relate to shipping costs, trust, payment options or usability.','Cart events, checkout steps, shipping disclosures, available payment methods');
+ if(buy==='unsure')add('Unknown buying performance','Your checkout performance is unclear, so a measurement check should come before major changes.','Shopify Analytics funnel, test purchases and order status');
+ if(ops==='broken')add('Technical issues behind the store','You reported broken apps, order flows or checkout rules. These should be reproduced and traced before changes are deployed.','App errors, logs, webhook delivery, Shopify plan and affected order paths');
+ if(ops==='out-of-sync')add('Inventory or order sync issues','You reported information not matching between sales or fulfillment systems. Overselling or manual corrections may result.','SKU mapping, source of truth, inventory updates, API/webhook failure logs');
+ if(ops==='manual')add('Time spent on manual operations','You reported repetitive operations. Some work may be automated after business rules and exception handling are clarified.','Repeated order tasks, spreadsheet transfers and tool integration possibilities');
+ if(ops==='unsure')add('Unknown backend reliability','The operational side of your store has not been reviewed.','Order notifications, stock accuracy and app/fulfillment flows');
+ const goals=answers.goals||[];
+ if(goals.includes('visitors'))add('Search visibility goal','You want more visitors from Google. Before SEO work, the store needs a baseline for indexing, search intent and existing organic traffic.','Search Console, catalog indexing, product/collection metadata and search queries');
+ if(goals.includes('wholesale'))add('Wholesale expansion','You want to sell to trade buyers. Account access, catalog pricing and order rules need a Shopify-plan compatibility review.','Shopify B2B eligibility, catalogs, onboarding, taxes and payment terms');
+ if(goals.includes('move'))add('Platform migration goal','You intend to move to Shopify. Migration quality depends on source platform data and a tested cutover plan.','Products, collections, customer records, redirects and old-vs-new counts');
+ if(!notes.length)add('Initial store review recommended','Your answers do not show a clear single problem. That is a reason to review the store rather than prescribe work prematurely.','Live storefront test, basic analytics, operational checks and project goals');
+ return notes;
+}
+function answerLabel(q){if(q.multiple)return(answers[q.id]||[]).map(v=>q.options.find(o=>o[0]===v)?.[1]).filter(Boolean).join(', ')||'Not supplied';return q.options.find(o=>o[0]===answers[q.id])?.[1]||'Not supplied'}
+function renderReport(notes){
+ const issues=$('#check-issues'),snapshot=$('#check-snapshot');issues.replaceChildren();snapshot.replaceChildren();
+ notes.forEach((note,i)=>{const card=document.createElement('article');card.className='check-issue';
+ const number=document.createElement('span');number.className='check-issue-num';number.textContent=String(i+1).padStart(2,'0');
+ const title=document.createElement('h4');title.textContent=note.label;
+ const observation=document.createElement('p');observation.textContent=note.observation;
+ const verify=document.createElement('p');verify.className='check-verify';verify.textContent='Expert should verify: '+note.verify;
+ card.append(number,title,observation,verify);issues.append(card)});
+ questions.forEach(q=>{const row=document.createElement('div');const term=document.createElement('dt');term.textContent=q.heading;const description=document.createElement('dd');description.textContent=answerLabel(q);row.append(term,description);snapshot.append(row)})
+}
+
 function finish(){
- const recs=evaluate();show('result');
+ const recs=evaluate(),notes=buildReport();show('result');renderReport(notes);
  const cards=$('#check-recommendations');cards.replaceChildren();
  recs.forEach((rec,index)=>{
   const card=document.createElement('article');card.className='check-recommendation';
@@ -102,14 +138,14 @@ function finish(){
   const link=document.createElement('a');link.href='/services/'+rec.slug+'/';link.textContent='Learn about this service ↗';
   card.append(priority,heading,why,desc,link);cards.append(card)
  });
- const text=summary(recs);
+ const text=summary(recs)+'\n\nINITIAL REPORT (SELF-REPORTED SYMPTOMS):\n'+notes.map((n,i)=>(i+1)+'. '+n.label+'\n  '+n.observation+'\n  To verify: '+n.verify).join('\n')+'\n\nIMPORTANT: A MACHO expert must review the real store and its analytics/technical setup before determining which services are needed, if any. No diagnosis or quote has been made.';
  const copy=$('#check-copy');copy.onclick=async()=>{try{await navigator.clipboard.writeText(text);copy.textContent='COPIED ✓';setTimeout(()=>copy.textContent='COPY MY PLAN ↗',2600)}catch(e){copy.textContent='COPY NOT AVAILABLE';setTimeout(()=>copy.textContent='COPY MY PLAN ↗',2600)}};
  const contact=$('#check-contact');contact.href='/contact/?assessment=1&service='+encodeURIComponent(recs[0].slug);
  contact.onclick=()=>{try{sessionStorage.setItem('macho_shopify_assessment_v1',JSON.stringify({summary:text,created:Date.now(),primary:recs[0].slug}))}catch(e){/* optional transfer; users can still copy their plan */}};
  const email=$('#check-email');email.href='mailto:machomanexpert@gmail.com?subject='+encodeURIComponent('MACHO store check: request a review')+'&body='+encodeURIComponent(text.slice(0,6000)+'\n\nPlease contact me to discuss.');
  const whatsapp=$('#check-whatsapp');whatsapp.href='https://wa.me/2349160956794?text='+encodeURIComponent(text.slice(0,3800)+'\n\nI would like help reviewing my store.');
  $('#check-result-heading').textContent=(answers.age==='not-live')?'Your store launch priorities.':'Here are areas worth reviewing.';
- $('#check-result-subtitle').textContent='Based on the answers you provided. We have not accessed your Shopify account, checked your analytics or run a technical audit.';
+ $('#check-result-subtitle').textContent='This is your complete self-reported store snapshot with potential issues, what an expert should verify, and services worth considering. It is not a completed Shopify audit.';
  $('#check-results-top').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});$('#check-results-top').focus();
 }
 show('intro');
