@@ -59,3 +59,21 @@ window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFr
 
 /* Load optional first-party visitor activity notice across Shopify pages. */
 ;(()=>{if(location.pathname.startsWith('/macho-activity/'))return;const s=document.createElement('script');s.defer=true;s.src='/assets/visitor-activity.js';document.head.append(s)})();
+
+/* Preserve the exact catalog capability the visitor selected in their enquiry. */
+;(()=>{
+ const params=new URLSearchParams(location.search);
+ const raw=params.get('topic');
+ const topic=typeof raw==='string'?raw.replace(/[<>]/g,'').slice(0,90):'';
+ if(!topic)return;
+ if(location.pathname.startsWith('/services/')){
+  document.querySelectorAll('a[href^="/contact/"]').forEach(a=>{
+   const u=new URL(a.href,location.origin);u.searchParams.set('topic',topic);
+   a.href=u.pathname+u.search;
+  });
+ }
+ if(location.pathname==='/contact/'){
+  const form=document.getElementById('project-form');
+  if(form?.elements.project&&!form.elements.project.value)form.elements.project.value='I would like help with '+topic+'. Please review my store and recommend the right scope.';
+ }
+})();
