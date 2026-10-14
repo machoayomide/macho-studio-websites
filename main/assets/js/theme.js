@@ -22,3 +22,5 @@ if(!reduced&&'IntersectionObserver' in window){const io=new IntersectionObserver
 ;(()=>{document.querySelectorAll('.wordmark .wordmark-icon').forEach(old=>{const img=document.createElement('img');img.src='/assets/img/brand-mark.svg';img.alt='';img.width=43;img.height=31;img.className='studio-brand-icon';old.replaceWith(img)});})();
 
 ;(()=>{if(!document.head.querySelector('link[rel="icon"]')){const link=document.createElement('link');link.rel='icon';link.type='image/svg+xml';link.href='/favicon.svg';document.head.append(link)}})();
+
+;(()=>{const header=document.querySelector('.header');if(!header)return;let queued=false;const render=()=>{queued=false;header.classList.toggle('is-condensed',window.scrollY>40)};window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(render)}},{passive:true});render()})();

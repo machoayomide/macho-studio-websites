@@ -205,3 +205,34 @@
 @media(max-width:1020px){.studio-contact-grid{grid-template-columns:1fr}}
 @media(max-width:800px){.studio-service-menu-panel{position:static;width:auto;box-shadow:none;border-radius:8px}.studio-service-menu summary{padding:12px 0}.primary-nav.open{overflow:auto;max-height:calc(100vh - 100px)}}
 @media(max-width:600px){.studio-contact-card{padding:22px}.studio-service-menu-panel a{padding:12px!important}}
+
+/* Scroll-persistent, compact Shopify masthead: does not reflow content */
+.site-header{position:fixed!important;top:0;left:0;right:0;z-index:1000;isolation:isolate}
+.site-header:before{background:rgba(12,23,18,.83);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.site-header .nav-shell{min-height:90px;transition:min-height .25s ease,padding .25s ease}
+.site-header.is-condensed .nav-shell{min-height:66px}
+.site-header.is-condensed:before{background:rgba(11,22,17,.94)}
+html{scroll-padding-top:92px}
+.site-header .studio-service-menu-panel{z-index:1100}
+@media(max-width:800px){.site-header .nav-shell{min-height:75px}.site-header.is-condensed .nav-shell{min-height:62px}html{scroll-padding-top:78px}}
+/* Lightweight progressive enhancement: CSS mock remains until WebGL is ready. */
+.commerce-universe{contain:layout paint style;touch-action:pan-y;user-select:none}
+.commerce-universe .webgl-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:4;opacity:0;transition:opacity .55s ease;pointer-events:none}
+.commerce-universe.webgl-ready .webgl-canvas{opacity:1}
+.commerce-universe.webgl-ready .commerce-assembly,
+.commerce-universe.webgl-ready .universe-ring,
+.commerce-universe.webgl-ready .orbit-spark{opacity:0;pointer-events:none;visibility:hidden}
+.commerce-universe.webgl-ready:before{z-index:0}
+.commerce-universe .webgl-controls{position:absolute;left:6%;right:5%;bottom:7%;z-index:15;display:flex;flex-wrap:wrap;gap:9px;align-items:center;pointer-events:none}
+.commerce-universe .webgl-btn{pointer-events:auto;min-height:38px;padding:10px 14px;background:rgba(16,42,31,.93);border:1px solid rgba(162,234,196,.55);border-radius:999px;color:#e7fff1;box-shadow:0 8px 25px rgba(0,0,0,.23);font:800 10px/1.15 Inter,Arial,sans-serif;letter-spacing:.075em;transition:border-color .2s ease,background .2s ease,transform .2s ease}
+.commerce-universe .webgl-btn:hover{background:#246448;border-color:#c0ffe2;transform:translateY(-2px)}
+.commerce-universe .webgl-btn:focus-visible{outline:3px solid #a2eac4;outline-offset:3px}
+.commerce-universe .webgl-pause{background:rgba(10,28,22,.81);border-color:#acd5b05c}
+.commerce-universe .webgl-status{position:absolute;z-index:14;top:6%;right:6%;display:block;color:#9addb6;font:750 10px/1.4 Inter,Arial,sans-serif;letter-spacing:.11em;background:rgba(13,31,24,.74);padding:6px 9px;border-radius:8px;pointer-events:none}
+.commerce-universe.webgl-ready .webgl-status{opacity:.8}
+.commerce-universe .scene-mode,.commerce-universe .scene-explain{display:none!important}
+.commerce-universe .model-legend{position:absolute;z-index:14;pointer-events:none}
+.commerce-universe.is-grabbing{cursor:grabbing}
+.commerce-universe:focus-visible{outline:3px solid #a2eac4;outline-offset:-5px}
+@media(max-width:620px){.commerce-universe .webgl-controls{left:3%;right:3%;bottom:6%;gap:6px}.commerce-universe .webgl-btn{font-size:9px;padding:10px 11px;min-height:36px}.commerce-universe .webgl-status{font-size:8px;right:2%;top:5%}}
+@media(prefers-reduced-motion:reduce){.commerce-universe .webgl-canvas,.commerce-universe .webgl-btn{transition:none!important;animation:none!important}.commerce-universe .orbit-spark{animation:none!important}}

@@ -203,3 +203,12 @@ body.home{background:#e9e9ed;color:#f6f4f0}
 .wordmark .studio-brand-icon{display:block;width:43px;height:31px;flex:none;object-fit:contain;filter:drop-shadow(0 4px 9px rgba(99,111,241,.17))}
 @media(max-width:600px){.wordmark .studio-brand-icon{width:36px;height:27px}}
 @media(prefers-reduced-motion:reduce){.macho-portrait-scene,.macho-word-layer,.macho-hover-word{transition:none!important;animation:none!important}}
+
+/* Compact sticky navigation without changing approved hero composition */
+.header{position:sticky;top:0;z-index:1000;isolation:isolate;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.header .header-inner{height:92px;transition:height .25s ease}
+.header.is-condensed .header-inner{height:66px}
+.header.is-condensed{background:rgba(13,19,30,.97);box-shadow:0 12px 36px rgba(2,6,18,.16)}
+html{scroll-padding-top:96px}
+@media(max-width:760px){.header .header-inner{height:75px}.header.is-condensed .header-inner{height:62px}html{scroll-padding-top:78px}}
+@media(prefers-reduced-motion:reduce){.header .header-inner{transition:none!important}}
