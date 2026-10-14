@@ -49,10 +49,13 @@ window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFr
  const urls=[
   'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js',
   'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js',
-  location.pathname.startsWith('/assets/')?'/assets/motion-system.js':'/assets/js/motion-system.js'
+  '/assets/motion-system.js'
  ];
  const load=url=>new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.async=true;s.onload=resolve;s.onerror=()=>reject(new Error('Motion library not reachable'));document.head.append(s)});
  const go=()=>load(urls[0]).then(()=>load(urls[1])).then(()=>load(urls[2])).catch(()=>{});
  const start=()=>{if('requestIdleCallback' in window)requestIdleCallback(go,{timeout:1200});else setTimeout(go,200)};
  if(document.readyState==='complete')start();else addEventListener('load',start,{once:true});
 })();
+
+/* Load optional first-party visitor activity notice across Shopify pages. */
+;(()=>{if(location.pathname.startsWith('/macho-activity/'))return;const s=document.createElement('script');s.defer=true;s.src='/assets/visitor-activity.js';document.head.append(s)})();

@@ -26,7 +26,7 @@ async function event(request,env,ctx){
  if(request.method!=="POST")return response({error:"Method not allowed"},405);
  if(!sameOrigin(request))return response({error:"Cross-origin event not accepted"},403);
  if(Number(request.headers.get("Content-Length")||"0")>2200)return response({error:"Event too large"},413);
- let input;try{input=await request.json()}catch{return response({error:"Invalid JSON"},400)}
+ let input;try{const raw=await request.text();if(raw.length>2200)return response({error:"Event too large"},413);input=JSON.parse(raw)}catch{return response({error:"Invalid JSON"},400)}
  if(!input||!Object.prototype.hasOwnProperty.call(EVENTS,input.type))return response({error:"Unsupported activity"},400);
  const sid=safe(input.session,48),view=safe(input.view,48);
  if(!/^[A-Za-z0-9_-]{8,48}$/.test(sid)||!/^[A-Za-z0-9_-]{8,48}$/.test(view))return response({error:"Invalid session"},400);
