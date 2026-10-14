@@ -1,1 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://shopify.machostudio.dpdns.org/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/services/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/work/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/about/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/process/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/contact/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/privacy/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/solutions/custom-theme-development/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/solutions/shopify-store-design/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/solutions/shopify-migrations/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/solutions/shopify-integrations/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/solutions/shopify-b2b/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/solutions/shopify-fixes-performance/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/work/toolhaus/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/work/ecwid-catalog-migration/</loc></url><url><loc>https://shopify.machostudio.dpdns.org/work/inventory-sync/</loc></url></urlset>
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://shopify.machostudio.dpdns.org/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/custom-themes/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/figma-to-shopify/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/migrations/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/integrations/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/b2b-wholesale/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/fixes-speed/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/services/checkout-functions/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/work/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/work/toolhaus/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/work/ecwid-to-shopify/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/work/zoho-inventory-sync/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/work/premium-retail-trade/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/about/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/process/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/faqs/</loc></url>
+  <url><loc>https://shopify.machostudio.dpdns.org/contact/</loc></url>
+</urlset>
