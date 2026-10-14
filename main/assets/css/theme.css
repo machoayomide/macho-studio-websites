@@ -251,3 +251,8 @@ html{scroll-padding-top:96px}
 .macho-orbit-scroll-spacer{height:210svh;pointer-events:none}
 @media(max-width:760px){.macho-orbit-story{min-height:270svh}.macho-orbit-sticky{padding-top:73px;min-height:0}.macho-orbit-heading{font-size:8px;letter-spacing:.08em}.macho-orbit-grid{grid-template-columns:1fr;display:flex;flex-direction:column;justify-content:center;width:100%;gap:0}.macho-orbit-visual{order:1;height:42svh;min-height:230px;max-height:430px}.macho-orbit-text{order:2;height:43svh;min-height:0;width:100%;padding:8px 30px 20px;justify-content:start}.orbit-kicker{font-size:9px;margin-bottom:6px}.orbit-chapter h2{font-size:clamp(38px,9.2vw,58px);margin:8px 0 10px}.orbit-chapter p{font-size:13px;line-height:1.45}.orbit-chapter a{margin-top:11px;font-size:11px}.orbit-chapter-number{font-size:9px}.orbit-steps{margin-top:13px}.macho-orbit-control{bottom:3%}.macho-orbit-bottom{font-size:8px;letter-spacing:.04em}.macho-orbit-scroll-spacer{height:170svh}}
 @media(prefers-reduced-motion:reduce){.macho-orbit-story{min-height:auto}.macho-orbit-sticky{height:auto;min-height:650px;position:relative}.macho-orbit-scroll-spacer{display:none}.orbit-chapter{animation:none!important}.macho-orbit-visual canvas{display:none}}
+
+/* Persistent progress bar created by GSAP. No interaction/overlay above actual navigation. */
+.macho-reading-progress{position:fixed;z-index:10020;top:0;left:0;right:0;height:3px;background:transparent;pointer-events:none}
+.macho-reading-progress span{display:block;width:100%;height:100%;background:linear-gradient(90deg,#5179ef,#9ac3ff,#c4d6ff);transform-origin:left;transform:scaleX(0)}
+@media(prefers-reduced-motion:reduce){.macho-reading-progress{display:none}}

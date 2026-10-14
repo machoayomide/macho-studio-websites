@@ -27,3 +27,27 @@ const form=document.querySelector('#project-form');if(form){const selected=new U
 let queued=false;const check=()=>{queued=false;header.classList.toggle('is-condensed',window.scrollY>40)};
 window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(check)}},{passive:true});check();
 })();
+
+/* Universal MACHO identity. Shopify is a discipline, never part of the logo. */
+;(()=>{
+ document.querySelectorAll('.site-header .brand').forEach(el=>{el.setAttribute('aria-label','MACHO home');const label=el.querySelector('.brand-word');if(label)label.innerHTML='MACHO<span class="brand-dot">.</span>'});
+ document.querySelectorAll('footer .big-brand').forEach(el=>el.innerHTML='MACHO<span>.</span>');
+ document.querySelectorAll('footer .footer-bottom > span:first-child').forEach(el=>el.textContent='© 2026 MACHO · Independent development.');
+ document.querySelectorAll('footer .footer-brand > p').forEach(el=>el.textContent='Independent Shopify development, migrations, and connected ecommerce systems.');
+ document.querySelectorAll('footer a[href*="machostudio.dpdns.org"]').forEach(a=>a.textContent='Explore MACHO ↗');
+ document.querySelectorAll('footer .studio-disclaimer').forEach(el=>el.textContent='Shopify is a trademark of Shopify Inc. MACHO is independent and is not run by Shopify.');
+})();
+
+/* Progressive GSAP/ScrollTrigger enhancement: never blocks first paint or navigation. */
+;(()=>{
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const urls=[
+  'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js',
+  'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js',
+  location.pathname.startsWith('/assets/')?'/assets/motion-system.js':'/assets/js/motion-system.js'
+ ];
+ const load=url=>new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.async=true;s.onload=resolve;s.onerror=()=>reject(new Error('Motion library not reachable'));document.head.append(s)});
+ const go=()=>load(urls[0]).then(()=>load(urls[1])).then(()=>load(urls[2])).catch(()=>{});
+ const start=()=>{if('requestIdleCallback' in window)requestIdleCallback(go,{timeout:1200});else setTimeout(go,200)};
+ if(document.readyState==='complete')start();else addEventListener('load',start,{once:true});
+})();

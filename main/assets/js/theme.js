@@ -24,3 +24,26 @@ if(!reduced&&'IntersectionObserver' in window){const io=new IntersectionObserver
 ;(()=>{if(!document.head.querySelector('link[rel="icon"]')){const link=document.createElement('link');link.rel='icon';link.type='image/svg+xml';link.href='/favicon.svg';document.head.append(link)}})();
 
 ;(()=>{const header=document.querySelector('.header');if(!header)return;let queued=false;const render=()=>{queued=false;header.classList.toggle('is-condensed',window.scrollY>40)};window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(render)}},{passive:true});render()})();
+
+/* Shared MACHO branding on home and inner pages; specialist areas are content, not logos. */
+;(()=>{document.querySelectorAll('.wordmark').forEach(el=>{
+ el.setAttribute('aria-label','MACHO home');
+ const label=el.querySelector('span:not(.wordmark-icon)');
+ if(label)label.innerHTML='MACHO<span class="wordmark-dot">.</span>';
+});
+document.querySelectorAll('.footer-brand').forEach(el=>{el.innerHTML='MACHO<span>.</span>'});
+})();
+
+/* Progressive GSAP/ScrollTrigger enhancement: never blocks first paint or navigation. */
+;(()=>{
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const urls=[
+  'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js',
+  'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js',
+  location.pathname.startsWith('/assets/')?'/assets/js/motion-system.js':'/assets/js/motion-system.js'
+ ];
+ const load=url=>new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.async=true;s.onload=resolve;s.onerror=()=>reject(new Error('Motion library not reachable'));document.head.append(s)});
+ const go=()=>load(urls[0]).then(()=>load(urls[1])).then(()=>load(urls[2])).catch(()=>{});
+ const start=()=>{if('requestIdleCallback' in window)requestIdleCallback(go,{timeout:1200});else setTimeout(go,200)};
+ if(document.readyState==='complete')start();else addEventListener('load',start,{once:true});
+})();
