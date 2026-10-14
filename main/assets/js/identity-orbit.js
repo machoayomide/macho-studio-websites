@@ -28,12 +28,13 @@ async function build(){
  if(started)return;started=true;
  status.textContent='PREPARING 3D';
  try{
- const T=await import('three');
+ const [T,{RoomEnvironment}]=await Promise.all([import('three'),import('three/addons/environments/RoomEnvironment.js')]);
  const renderer=new T.WebGLRenderer({alpha:true,antialias:!mobile,powerPreference:mobile?'low-power':'high-performance'});
  renderer.setPixelRatio(Math.min(devicePixelRatio||1,mobile?1.2:1.55));renderer.setClearColor(0x000000,0);
  renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.24;
  renderer.domElement.setAttribute('aria-hidden','true');stage.prepend(renderer.domElement);
- const scene=new T.Scene(),camera=new T.PerspectiveCamera(mobile?36:33,1,.1,45);
+ const pmrem=new T.PMREMGenerator(renderer);const roomEnvironment=new RoomEnvironment(renderer);const environment=pmrem.fromScene(roomEnvironment,.035);roomEnvironment.dispose();pmrem.dispose();
+ const scene=new T.Scene(),camera=new T.PerspectiveCamera(mobile?36:33,1,.1,45);scene.environment=environment.texture;
  camera.position.set(0,0,mobile?8.8:8);camera.lookAt(0,0,0);
  scene.add(new T.AmbientLight(0xeaf0ff,2.05));
  const key=new T.DirectionalLight(0xe4edff,5.1);key.position.set(-3,6,6);scene.add(key);

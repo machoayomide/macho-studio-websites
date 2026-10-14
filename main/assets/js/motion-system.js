@@ -15,7 +15,7 @@ const reveal=(selector,options={})=>{
  const items=[...document.querySelectorAll(selector)];
  items.forEach((el,i)=>{
   if(el.closest('.shopify-kinetic')||el.closest('.macho-orbit-story'))return;
-  gsap.fromTo(el,{autoAlpha:1,y:phone?22:38},{y:0,autoAlpha:1,duration:1.05,ease:'power3.out',immediateRender:false,scrollTrigger:{trigger:el,start:'top 91%',once:true,...options},overwrite:'auto'});
+  gsap.fromTo(el,{autoAlpha:0,y:phone?22:38},{y:0,autoAlpha:1,duration:1.05,ease:'power3.out',immediateRender:false,scrollTrigger:{trigger:el,start:'top 91%',once:true,...options},overwrite:'auto'});
  });
 };
 if(isMain){
