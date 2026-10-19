@@ -9,17 +9,21 @@ const chapters=[...story.querySelectorAll('[data-orbit-chapter]')];
 const step=story.querySelector('#orbit-current-step'),bar=story.querySelector('#orbit-progress-bar');
 const pauseBtn=story.querySelector('#macho-orbit-pause'),status=story.querySelector('#macho-orbit-status');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
-const mobile=matchMedia('(max-width:760px)').matches,saveData=navigator.connection?.saveData||(navigator.deviceMemory&&navigator.deviceMemory<=2);
+const compact=matchMedia('(max-width:760px)'),short=matchMedia('(max-height:550px)');
+const stacked=()=>compact.matches||short.matches||reduce.matches;
+document.documentElement.classList.add('macho-orbit-ready');
+const mobile=compact.matches,saveData=navigator.connection?.saveData||(navigator.deviceMemory&&navigator.deviceMemory<=2);
 let scroll=0,current=-1,sceneControl=null,started=false,visible=false,paused=false,queued=false;
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
 function sync(){
+ const isStacked=stacked();document.documentElement.classList.toggle('macho-orbit-stacked',isStacked);
  const rect=story.getBoundingClientRect();const span=Math.max(1,rect.height-innerHeight);scroll=clamp(-rect.top/span);
  const n=Math.min(2,Math.floor(scroll*3));
- if(n!==current){current=n;chapters.forEach((el,i)=>{const active=i===n;el.classList.toggle('is-active',active);el.setAttribute('aria-hidden',String(!active));el.querySelectorAll('a').forEach(a=>a.tabIndex=active?0:-1)});step.textContent=String(n+1).padStart(2,'0')}
+ if(n!==current||isStacked){current=n;chapters.forEach((el,i)=>{const active=isStacked||i===n;el.classList.toggle('is-active',active);el.setAttribute('aria-hidden',String(!active));el.querySelectorAll('a').forEach(a=>a.tabIndex=active?0:-1)});step.textContent=String(n+1).padStart(2,'0')}
  bar.style.transform='scaleX('+Math.max(.025,scroll).toFixed(3)+')';sceneControl?.setScroll(scroll);
 }
 addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;sync()})}},{passive:true});
-addEventListener('resize',sync,{passive:true});sync();
+addEventListener('resize',()=>{current=-1;sync()},{passive:true});reduce.addEventListener('change',()=>{current=-1;sync();sceneControl?.setPaused(reduce.matches||paused);pauseBtn.hidden=reduce.matches});sync();
 pauseBtn?.addEventListener('click',()=>{paused=!paused;pauseBtn.setAttribute('aria-pressed',String(paused));pauseBtn.textContent=paused?'RESUME ▶':'PAUSE Ⅱ';sceneControl?.setPaused(paused)});
 if(reduce.matches){status.textContent='STATIC MODE';pauseBtn.hidden=true;return}
 if(saveData){status.textContent='LOW-DATA · STATIC MARK';pauseBtn.hidden=true;return}
@@ -61,23 +65,23 @@ async function build(){
  for(const theta of [.935,1.99]){const o=new T.Mesh(new T.SphereGeometry(1.72,96,12,0,Math.PI*2,theta,.085),accent);shells.add(o)}
  const lineMat=new T.MeshBasicMaterial({color:0x8397ff,transparent:true,opacity:.2,depthWrite:false});
  const rings=[2.45,2.98].map((r,i)=>{const ring=new T.Mesh(new T.TorusGeometry(r,.006,3,105),lineMat);ring.rotation.set(i?.32:1.15,i?.4:0,i?.12:.4);scene.add(ring);return ring});
- let active=visible,halt=paused,last=0,raf=0,yaw=0,targetYaw=0,pitch=0,targetPitch=0,currentScroll=scroll,smoothScroll=scroll,dragging=false,downX=0,downY=0;
+ let active=visible,halt=paused,last=0,raf=0,yaw=0,targetYaw=0,pitch=0,targetPitch=0,currentScroll=scroll,smoothScroll=scroll,dragging=false,downX=0,downY=0,ambientTime=0;
  function resize(){const r=stage.getBoundingClientRect();if(!r.width||!r.height)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(Math.round(r.width),Math.round(r.height),false)}
  new ResizeObserver(resize).observe(stage);resize();
  function paint(now){
   raf=0;if(!active||document.hidden)return;
   if(now-last<(mobile?33:19)){if(!halt)raf=requestAnimationFrame(paint);return}
-  const dt=Math.min(.06,(now-last||16)/1000);last=now;const eff=1-Math.exp(-dt*4.5);
+  const dt=Math.min(.06,(now-last||16)/1000);last=now;if(!halt)ambientTime+=dt*1000;const eff=1-Math.exp(-dt*4.5);
   smoothScroll+=(currentScroll-smoothScroll)*eff;yaw+=(targetYaw-yaw)*eff;pitch+=(targetPitch-pitch)*eff;
   let split=clamp((smoothScroll-.15)/.55),close=clamp((smoothScroll-.78)/.22);split*=1-close*.83;
   shells.children.forEach(child=>{if(child.userData.index==null)return;const i=child.userData.index;child.position.y=(i===0?.31:i===2?-.33:0)*split;child.position.x=(i===1?.18:i===2?-.16:.0)*split});
-  orbit.rotation.y=smoothScroll*Math.PI*3.7+yaw+(halt?0:Math.sin(now*.00023)*.06);
+  orbit.rotation.y=smoothScroll*Math.PI*3.7+yaw+Math.sin(ambientTime*.00023)*.06;
   orbit.rotation.x=pitch+Math.sin(smoothScroll*Math.PI*2)*.12;
   orbit.rotation.z=smoothScroll*-.34;
-  orbit.position.y=halt?0:Math.sin(now*.00075)*.12;
+  orbit.position.y=Math.sin(ambientTime*.00075)*.12;
   const scale=1+.07*Math.sin(smoothScroll*Math.PI);orbit.scale.setScalar(scale);
   rings[0].rotation.y=smoothScroll*Math.PI*2;rings[1].rotation.x=.3+smoothScroll*Math.PI*1.7;
-  renderer.render(scene,camera);
+  renderer.render(scene,camera);stage.classList.add('webgl-visible');
   if(!halt || Math.abs(smoothScroll-currentScroll)>.003 || Math.abs(yaw-targetYaw)>.003)raf=requestAnimationFrame(paint);
  }
  function schedule(){if(raf)cancelAnimationFrame(raf);raf=0;last=0;if(active&&!document.hidden)raf=requestAnimationFrame(paint)}
@@ -87,7 +91,7 @@ async function build(){
  stage.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(e.key))return;e.preventDefault();if(e.key==='Home'){targetYaw=0;targetPitch=0}else if(e.key==='ArrowLeft')targetYaw-=.16;else if(e.key==='ArrowRight')targetYaw+=.16;else if(e.key==='ArrowUp')targetPitch-=.11;else targetPitch+=.11;schedule()});
  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0}else schedule()});
  sceneControl={setScroll(v){currentScroll=v;schedule()},setVisible(v){active=v;if(!v){cancelAnimationFrame(raf);raf=0}else schedule()},setPaused(v){halt=v;schedule()}};
- stage.classList.add('webgl-visible');status.textContent='LIVE 3D · DRAG TO TURN';sceneControl.setScroll(scroll);sceneControl.setVisible(visible);
- }catch(error){console.warn('MACHO 3D sculpture fallback',error);status.textContent='STILL BRAND VIEW';pauseBtn.hidden=true}
+ renderer.domElement.addEventListener('webglcontextlost',()=>{cancelAnimationFrame(raf);raf=0;active=false;stage.classList.remove('webgl-visible');status.textContent='STILL BRAND VIEW';pauseBtn.hidden=true});status.textContent='LIVE 3D · DRAG TO TURN';sceneControl.setScroll(scroll);sceneControl.setVisible(visible);
+ }catch(error){stage.classList.remove('webgl-visible');console.warn('MACHO 3D sculpture fallback',error);status.textContent='STILL BRAND VIEW';pauseBtn.hidden=true}
 }
 })();

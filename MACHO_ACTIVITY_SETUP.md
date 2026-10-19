@@ -1,6 +1,6 @@
 # MACHO Visitor Activity — Cloudflare + Telegram Setup
 
-**Status:** Code is committed on the review branch, but real alert delivery requires configuration in Cloudflare. **Never put bot tokens or dashboard passwords into GitHub, HTML, frontend JavaScript or chat messages.**
+**Status:** Code is deployed from `main`, but real alert delivery requires configuration in Cloudflare. **Never put bot tokens or dashboard passwords into GitHub, HTML, frontend JavaScript or chat messages.**
 
 ## What it provides
 
@@ -44,9 +44,9 @@ Add this to the **Shopify Pages project** to access the dashboard. Optionally ad
 
 **Never put the key in a query string.** The dashboard accepts it only through an Authorization header and keeps it in memory while the page is open.
 
-Dashboard preview: `https://site-refresh-oct2026.macho-shopify-git.pages.dev/macho-activity/`
+Dashboard: `https://shopify.machostudio.dpdns.org/macho-activity/`
 
-After deployment to production, the corresponding path is `https://shopify.machostudio.dpdns.org/macho-activity/`. This is an address, **not** a claim that the production feature has been published.
+After deployment to production, the corresponding path is `https://shopify.machostudio.dpdns.org/macho-activity/`. The dashboard page is published; storage and delivery depend on the settings below.
 
 ## Step 3: Telegram notifications (optional)
 
@@ -86,7 +86,7 @@ The timestamps, IDs and example values above are illustrative.
 - Check Cloudflare Functions/KV usage and browser Network tab for `POST /api/activity` -> HTTP 202.
 - Confirm a visitor without consent sees no custom event requests.
 - Validate on mobile and with ad/tracker blockers.
-- Only after tests and approval, merge the draft PR into `main`.
+- Verify the production environment separately after deployment.
 
 ## Dashboard access/security
 
@@ -104,3 +104,9 @@ If you require **WhatsApp notifications** instead of Telegram, that is a separat
 - Errors on static pages: verify `_worker.js` includes `return env.ASSETS.fetch(request)` for all non-API requests.
 
 Official background: https://developers.cloudflare.com/pages/functions/advanced-mode/
+
+## Connection and delivery verification
+
+The dashboard now checks `/api/activity/ready` and lists missing setting names before login. A configured Telegram flag only confirms the secrets are present. After entering the dashboard key, use **Send test alert**. The authenticated endpoint awaits storage and Telegram responses and reports a failed delivery as an error, including Telegram responses with `ok:false`. The test is labeled as an owner test, not a visitor or lead. Keep the dashboard key and bot token out of screenshots and source code.
+
+Run `node tests/activity-worker.test.mjs` to check both workers with simulated storage and Telegram responses. This does not prove production delivery.

@@ -51,4 +51,10 @@ Never paste these into GitHub or commit them. Test by opting into activity on a 
 
 ## Deployment status
 
-The source lives on review branch `site-refresh-oct2026`; **a passing build alone does not mean KV/secrets are set or notifications are delivering**.
+The source is published from `main`; **a passing build alone does not mean KV/secrets are set or notifications are delivering**.
+
+## Connection and delivery verification
+
+The dashboard now checks `/api/activity/ready` and lists missing setting names before login. A configured Telegram flag only confirms the secrets are present. After entering the dashboard key, use **Send test alert**. The authenticated endpoint awaits storage and Telegram responses and reports a failed delivery as an error, including Telegram responses with `ok:false`. The test is labeled as an owner test, not a visitor or lead. Keep the dashboard key and bot token out of screenshots and source code.
+
+Run `node tests/activity-worker.test.mjs` to check both workers with simulated storage and Telegram responses. This does not prove production delivery.
