@@ -3,7 +3,11 @@
  * Activity alerts require Cloudflare Pages _worker.js + secrets configured.
  */
 (()=>{'use strict';
-if(location.pathname.startsWith('/macho-activity'))return;
+if(location.pathname.startsWith('/macho-activity')||window.machoActivityLoaded)return;
+window.machoActivityLoaded=true;
+const route=p=>p.replace(/\.html$/,'').replace(/\/$/,'')||'/';
+const isService=p=>p.startsWith('/practice-')||p==='/services'||p.startsWith('/services/');
+const path=route(location.pathname);
 const key='macho_activity_consent_v1';
 const sidKey='macho_activity_session_v1';
 const deviceVisit='macho_activity_return_v1';
@@ -24,8 +28,8 @@ function start(){
  const wasHere=safely(()=>localStorage.getItem(deviceVisit));
  emit('page_view');if(wasHere&&wasHere!==session){once('returning_visit')}
  safely(()=>localStorage.setItem(deviceVisit,session));
- if(location.pathname.startsWith('/services/')&&location.pathname!=='/services/')emit('service_view',{service:location.pathname.split('/')[2]||''});
- if(location.pathname==='/contact/')once('contact_open');
+ if(isService(path))emit('service_view',{service:path.split('/').pop().slice(0,40)});
+ if(path==='/contact')once('contact_open');
  setTimeout(()=>{if(document.visibilityState==='visible')once('time_30s')},30000);
  setTimeout(()=>{if(document.visibilityState==='visible')once('time_120s')},120000);
  updateScroll();
@@ -49,7 +53,7 @@ function banner(){
  const actions=document.createElement('div');actions.className='act-buttons';
  const allow=document.createElement('button');allow.type='button';allow.textContent='Allow activity';
  const decline=document.createElement('button');decline.type='button';decline.textContent='No thanks';
- const more=document.createElement('a');more.className='act-link';more.href='/privacy/';more.textContent='Privacy information ↗';
+ const more=document.createElement('a');more.className='act-link';more.href=location.hostname.startsWith('shopify.')?'/privacy/':'/privacy';more.textContent='Privacy information ↗';
  const decide=value=>{safely(()=>localStorage.setItem(key,value));choice=value;b.remove();if(value==='yes')start();else enabled=false};
  allow.onclick=()=>decide('yes');decline.onclick=()=>decide('no');
  actions.append(allow,decline);b.append(title,copy,actions,more);document.body.append(b);
@@ -69,8 +73,8 @@ function attachActions(){
    if(url){
     if(url.hostname==='wa.me'||url.hostname==='api.whatsapp.com')emit('whatsapp_click',{source:location.pathname});
     else if(url.protocol==='mailto:')emit('email_click',{source:location.pathname});
-    else if(url.origin===location.origin&&url.pathname.startsWith('/services/'))emit('service_click',{service:url.pathname.split('/')[2]||''});
-    else if(url.origin===location.origin&&url.pathname.startsWith('/contact/')&&location.pathname==='/store-check/')emit('assessment_handoff');
+    else if(url.origin===location.origin&&isService(route(url.pathname)))emit('service_click',{service:route(url.pathname).split('/').pop().slice(0,40)});
+    else if(url.origin===location.origin&&(route(url.pathname)==='/contact'||url.hash==='#contact')){emit('contact_open',{source:path});if(path==='/store-check')emit('assessment_handoff');}
    }
   }
   if(!button)return;
@@ -80,8 +84,8 @@ function attachActions(){
   if(button.id==='check-copy')emit('copy_report');
   if(button.id==='copy-brief')emit('brief_prepared',{channel:'copy'});
  });
- const form=document.querySelector('#project-form');
- if(form){const output=document.querySelector('#brief-output');if(output){new MutationObserver(()=>{if(!output.hidden)once('brief_prepared')}).observe(output,{attributes:true,attributeFilter:['hidden']})}}
+ const form=document.querySelector('#project-form,#macho-static-contact');
+ if(form){const output=document.querySelector('#brief-output,#macho-brief-output');if(output){new MutationObserver(()=>{if(!output.hidden)once('brief_prepared')}).observe(output,{attributes:true,attributeFilter:['hidden']})}}
 }
 async function boot(){try{const res=await fetch('/api/activity/ready',{cache:'no-store'});if(!res.ok)return;const config=await res.json();if(!config.enabled)return;settings();attachActions();if(choice==='yes')start();else if(choice!=='no')banner()}catch(e){/* No custom analytics before setup */}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();

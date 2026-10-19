@@ -5,7 +5,7 @@
  * Needs ACTIVITY_LOG KV for dashboard; Telegram secrets for chat notifications.
  */
 const EVENTS={
- page_view:"👁 New page view",returning_visit:"🔁 Returning opted-in visitor",
+ system_test:"🧪 MACHO notification test",page_view:"👁 New page view",returning_visit:"🔁 Returning opted-in visitor",
  time_30s:"⏱ 30 seconds on page",time_120s:"⏱ 2 minutes on page",
  scroll_50:"📜 Scrolled halfway",scroll_90:"📜 Reached page bottom",
  store_check_start:"🧭 Store Check started",store_check_step:"🧭 Store Check progress",
@@ -28,6 +28,7 @@ async function event(request,env,ctx){
  if(Number(request.headers.get("Content-Length")||"0")>2200)return response({error:"Event too large"},413);
  let input;try{const raw=await request.text();if(raw.length>2200)return response({error:"Event too large"},413);input=JSON.parse(raw)}catch{return response({error:"Invalid JSON"},400)}
  if(!input||!Object.prototype.hasOwnProperty.call(EVENTS,input.type))return response({error:"Unsupported activity"},400);
+ if(input.type==='system_test'&&!authEqual((request.headers.get('Authorization')||'').replace(/^Bearer\s+/i,''),env.ADMIN_DASHBOARD_KEY))return response({error:'Unauthorized'},401);
  const sid=safe(input.session,48),view=safe(input.view,48);
  if(!/^[A-Za-z0-9_-]{8,48}$/.test(sid)||!/^[A-Za-z0-9_-]{8,48}$/.test(view))return response({error:"Invalid session"},400);
  const path=safe(input.path,160).split("?")[0];if(!path.startsWith("/")||path.startsWith("//"))return response({error:"Invalid path"},400);
@@ -35,9 +36,9 @@ async function event(request,env,ctx){
  const details={};for(const k of allowedDetail){if(typeof input[k]==="string")details[k]=safe(input[k],55)}
  const country=safe(request.cf?.country||"Unknown",4);
  const record={event:input.type,label:EVENTS[input.type],id:crypto.randomUUID(),time:new Date().toISOString(),session:sid.slice(0,12),view:view.slice(0,12),page:path,device:device(request.headers.get("User-Agent")||""),country,site:new URL(request.url).hostname,details};
- if(!env.ACTIVITY_LOG&&!env.TELEGRAM_BOT_TOKEN)return response({ok:false,configured:false,error:"Activity backend not configured"},503);
+ if(!env.ACTIVITY_LOG&&!(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID))return response({ok:false,configured:false,error:"Activity backend not configured"},503);
  const jobs=[];
- if(env.ACTIVITY_LOG){const key="e:"+(9999999999999-Date.now()).toString().padStart(13,"0")+":"+record.id; jobs.push(env.ACTIVITY_LOG.put(key,JSON.stringify(record),{expirationTtl:60*60*24*7}))}
+ if(env.ACTIVITY_LOG){const key="e:"+(9999999999999-Date.now()).toString().padStart(13,"0")+":"+record.id; jobs.push(env.ACTIVITY_LOG.put(key,JSON.stringify(record),{expirationTtl:60*60*24*7}).then(()=>({channel:"storage",delivered:true})))}
  if(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID){
   const body="<b>"+labelSafe(record.label)+"</b>\n"+
    "🕒 "+labelSafe(record.time)+"\n"+
@@ -47,7 +48,11 @@ async function event(request,env,ctx){
    Object.entries(details).map(([k,v])=>"• "+labelSafe(k)+": "+labelSafe(v)).join("\n")+
    "\n<i>Anonymous activity · not a confirmed lead or sale</i>";
   const url="https://api.telegram.org/bot"+env.TELEGRAM_BOT_TOKEN+"/sendMessage";
-  jobs.push(fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:env.TELEGRAM_CHAT_ID,text:body,parse_mode:"HTML",disable_web_page_preview:true})}).then(r=>{if(!r.ok)console.log("Telegram delivery failed",r.status)}).catch(e=>console.log("Telegram request error",String(e).slice(0,140))));
+  jobs.push(fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:env.TELEGRAM_CHAT_ID,text:body,parse_mode:"HTML",disable_web_page_preview:true})}).then(async r=>{let data={};try{data=await r.json()}catch{}if(!r.ok||data.ok!==true)throw Error('Telegram rejected notification');return {channel:'telegram',delivered:true}}));
+ }
+ if(input.type==='system_test'){
+  const results=await Promise.allSettled(jobs);const ok=results.every(r=>r.status==='fulfilled');
+  return response({ok,storage:Boolean(env.ACTIVITY_LOG),notifications:Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID),results:results.map(r=>r.status==='fulfilled'?r.value:{delivered:false,error:'Delivery failed; check the configured channel in Cloudflare.'})},ok?200:502);
  }
  if(jobs.length)ctx.waitUntil(Promise.allSettled(jobs));
  return response({ok:true,queued:true},202);
@@ -63,10 +68,24 @@ async function report(request,env){
  const events=list.filter(Boolean);
  return response({events,telegram:Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID),storage:true,retention:"7 days",limit:120});
 }
+async function testNotification(request,env,ctx){
+ if(request.method!=='POST')return response({error:'Method not allowed'},405);
+ if(!sameOrigin(request))return response({error:'Cross-origin test not accepted'},403);
+ const token=(request.headers.get('Authorization')||'').replace(/^Bearer\s+/i,'');
+ if(!authEqual(token,env.ADMIN_DASHBOARD_KEY))return response({error:'Unauthorized'},401);
+ const headers=new Headers(request.headers);headers.set('Content-Type','application/json');headers.delete('Content-Length');
+ const test=new Request(request.url,{method:'POST',headers,body:JSON.stringify({type:'system_test',session:'owner-test-session',view:crypto.randomUUID(),path:'/macho-activity/',source:'owner-test'})});
+ return event(test,env,ctx);
+}
+function readiness(env){
+ const storage=Boolean(env.ACTIVITY_LOG),notifications=Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID),dashboard=Boolean(env.ADMIN_DASHBOARD_KEY);
+ return {enabled:storage||notifications,storage,notifications,dashboard,missing:[...(!storage?['ACTIVITY_LOG']:[]),...(!dashboard?['ADMIN_DASHBOARD_KEY']:[]),...(!env.TELEGRAM_BOT_TOKEN?['TELEGRAM_BOT_TOKEN']:[]),...(!env.TELEGRAM_CHAT_ID?['TELEGRAM_CHAT_ID']:[])]};
+}
 export default {
  async fetch(request,env,ctx){
   const path=new URL(request.url).pathname;
-  if(path==="/api/activity/ready")return response({enabled:Boolean(env.ACTIVITY_LOG||(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)),storage:Boolean(env.ACTIVITY_LOG),notifications:Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)});
+  if(path==="/api/activity/ready")return response(readiness(env));
+  if(path==="/api/activity/test")return testNotification(request,env,ctx);
   if(path==="/api/activity")return event(request,env,ctx);
   if(path==="/api/activity/report")return report(request,env);
   if(path.startsWith("/api/activity/"))return response({error:"Not found"},404);
