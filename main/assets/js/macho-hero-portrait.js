@@ -1,17 +1,11 @@
-/* Only the hero model is interactive; page content remains unchanged. */
-(()=>{
- const stage=document.getElementById('kinetic-media');
- const model=document.getElementById('macho-portrait-scene');
- if(!stage||!model)return;
- const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- const fine=window.matchMedia('(pointer: fine)').matches;
- if(reduced||!fine)return;
- let raf=0,px=0,py=0;
- stage.addEventListener('pointermove',e=>{
-  const r=stage.getBoundingClientRect();
-  px=((e.clientX-r.left)/r.width-.5);
-  py=((e.clientY-r.top)/r.height-.5);
-  if(!raf)raf=requestAnimationFrame(()=>{model.style.transform=`perspective(1100px) rotateY(${(px*6).toFixed(2)}deg) rotateX(${(-py*4).toFixed(2)}deg) translate3d(${(px*9).toFixed(1)}px,${(py*6).toFixed(1)}px,0)`;raf=0;});
- });
- stage.addEventListener('pointerleave',()=>{if(raf)cancelAnimationFrame(raf);raf=0;model.style.transform='';});
+/* Gentle hero depth, respects reduced-motion and touch devices. */
+(()=>{'use strict';
+const stage=document.getElementById('kinetic-media'),model=document.getElementById('macho-portrait-scene');
+if(!stage||!model||matchMedia('(prefers-reduced-motion: reduce)').matches||!matchMedia('(pointer: fine)').matches)return;
+let tx=0,ty=0,x=0,y=0,id=0;
+const step=()=>{id=0;x+=(tx-x)*.095;y+=(ty-y)*.095;model.style.transform=`perspective(1150px) rotateY(${(x*4).toFixed(2)}deg) rotateX(${(-y*3).toFixed(2)}deg) translate3d(${(x*6).toFixed(1)}px,${(y*4).toFixed(1)}px,0)`;if(Math.abs(tx-x)+Math.abs(ty-y)>.008)id=requestAnimationFrame(step)};
+function move(a,b){tx=a;ty=b;if(!id)id=requestAnimationFrame(step)}
+stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect();move((e.clientX-r.left)/r.width-.5,(e.clientY-r.top)/r.height-.5)},{passive:true});
+stage.addEventListener('pointerleave',()=>move(0,0));
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(id)cancelAnimationFrame(id);id=0}else move(0,0)});
 })();
