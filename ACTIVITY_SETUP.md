@@ -58,3 +58,7 @@ The source is published from `main`; **a passing build alone does not mean KV/se
 The dashboard now checks `/api/activity/ready` and lists missing setting names before login. A configured Telegram flag only confirms the secrets are present. After entering the dashboard key, use **Send test alert**. The authenticated endpoint awaits storage and Telegram responses and reports a failed delivery as an error, including Telegram responses with `ok:false`. The test is labeled as an owner test, not a visitor or lead. Keep the dashboard key and bot token out of screenshots and source code.
 
 Run `node tests/activity-worker.test.mjs` to check both workers with simulated storage and Telegram responses. This does not prove production delivery.
+
+## Production setup progress — 19 October 2026
+
+Created the dedicated `MACHO_ACTIVITY_LOG` namespace and saved the production `ACTIVITY_LOG` binding on both `macho-studio-git` and `macho-shopify-git`, using the same namespace for a combined feed. Redeploy to apply these settings. The private dashboard still requires the owner to enter `ADMIN_DASHBOARD_KEY` as an encrypted secret on `macho-shopify-git`. Telegram remains optional and unconfigured until the owner supplies `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in Cloudflare. Configuration presence is not proof of real delivery; use the authenticated Send test alert control after setup.
