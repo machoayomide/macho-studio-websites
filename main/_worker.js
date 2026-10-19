@@ -66,6 +66,9 @@ async function report(request,env){
 export default {
  async fetch(request,env,ctx){
   const path=new URL(request.url).pathname;
+  const clean=path.replace(/\/$/, "").replace(/\.html$/, "");
+  const serviceRoutes={"/practice-shopify":"https://shopify.machostudio.dpdns.org/","/services/shopify":"https://shopify.machostudio.dpdns.org/","/shopify":"https://shopify.machostudio.dpdns.org/","/services/apps":"/practice-apps","/services/web":"/practice-web","/services/wix":"/practice-wix","/services/crm":"/practice-crm","/services/automation":"/practice-automation"};
+  if(serviceRoutes[clean])return Response.redirect(new URL(serviceRoutes[clean],request.url),301);
   if(path==="/api/activity/ready")return response({enabled:Boolean(env.ACTIVITY_LOG||(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)),storage:Boolean(env.ACTIVITY_LOG),notifications:Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)});
   if(path==="/api/activity")return event(request,env,ctx);
   if(path==="/api/activity/report")return report(request,env);

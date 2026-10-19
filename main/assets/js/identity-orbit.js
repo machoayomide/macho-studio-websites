@@ -67,7 +67,7 @@ async function build(){
  function paint(now){
   raf=0;if(!active||document.hidden)return;
   if(now-last<(mobile?33:19)){if(!halt)raf=requestAnimationFrame(paint);return}
-  const dt=Math.min(.06,(now-last||16)/1000);last=now,eff=1-Math.exp(-dt*4.5);
+  const dt=Math.min(.06,(now-last||16)/1000);last=now;const eff=1-Math.exp(-dt*4.5);
   smoothScroll+=(currentScroll-smoothScroll)*eff;yaw+=(targetYaw-yaw)*eff;pitch+=(targetPitch-pitch)*eff;
   let split=clamp((smoothScroll-.15)/.55),close=clamp((smoothScroll-.78)/.22);split*=1-close*.83;
   shells.children.forEach(child=>{if(child.userData.index==null)return;const i=child.userData.index;child.position.y=(i===0?.31:i===2?-.33:0)*split;child.position.x=(i===1?.18:i===2?-.16:.0)*split});
