@@ -7,3 +7,20 @@ html:not(.macho-journey-ready) .shopify-kinetic,html.macho-journey-stacked .shop
 @media(max-height:550px) and (min-width:761px){.shopify-kinetic .kinetic-composition{min-height:620px;height:auto}.shopify-kinetic .commerce-real-model{height:480px;min-height:480px}}
 @media(prefers-reduced-motion:reduce){.commerce-real-model *{animation:none!important;transition:none!important}}
 @media(max-width:760px){.shopify-kinetic .kinetic-editorial,.shopify-kinetic .kinetic-panels{display:contents!important}.shopify-kinetic .cinematic-kicker{order:0;width:100%;margin-bottom:0}.shopify-kinetic .kinetic-panel{width:100%;padding-bottom:0!important}.shopify-kinetic .kinetic-panel[data-chapter="0"]{order:1}.shopify-kinetic .commerce-real-model{order:2}.shopify-kinetic .kinetic-panel[data-chapter="1"]{order:3}.shopify-kinetic .kinetic-panel[data-chapter="2"]{order:4}.shopify-kinetic .kinetic-panel[data-chapter="3"]{order:5}.shopify-kinetic .kinetic-panel:not([data-chapter="0"]){border-top:1px solid #b8d5c636;padding:28px 0!important}.shopify-kinetic .kinetic-pagination{display:none!important}}
+
+/* Optional true volumetric bag. The original official Shopify SVG remains the
+   no-WebGL, reduced-motion, save-data and offline fallback. */
+.commerce-real-model .macho-shopify-3d-canvas{
+ position:absolute;inset:0;width:100%;height:100%;z-index:2;
+ pointer-events:none;display:block;opacity:0;
+ transition:opacity .55s ease;
+ filter:drop-shadow(0 20px 28px rgba(23,54,18,.32));
+}
+.commerce-real-model.macho-3d-ready .macho-shopify-3d-canvas{opacity:1}
+.commerce-real-model.macho-3d-ready .kinetic-fallback{
+ opacity:0!important;visibility:hidden!important;pointer-events:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .commerce-real-model .macho-shopify-3d-canvas{display:none}
+ .commerce-real-model .kinetic-fallback{opacity:1!important;visibility:visible!important}
+}
