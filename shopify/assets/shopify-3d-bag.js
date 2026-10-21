@@ -170,8 +170,10 @@
   stage.querySelector('#kinetic-pause')?.addEventListener('click', () => {
     // The existing controller changes its paused state in the same click.
     queueMicrotask(() => {
-      if (stage.classList.contains('is-paused')) cancelAnimationFrame(frameId);
-      else resume();
+      if (stage.classList.contains('is-paused')) {
+        cancelAnimationFrame(frameId);
+        frameId = 0;
+      } else resume();
     });
   });
   const visibility = new IntersectionObserver(entries => {
