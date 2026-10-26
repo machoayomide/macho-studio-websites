@@ -85,7 +85,7 @@
        e.preventDefault();if(!form.reportValidity())return;
        const d=new FormData(form),v=k=>String(d.get(k)||'').trim();
        const message=['MACHO PROJECT ENQUIRY','Name: '+v('name'),'Email: '+v('email'),'Service: '+v('service'),'Timeline: '+v('timeline'),'','Project details:',v('message')].join('\n');
-       const mail='mailto:machomanexpert@gmail.com?subject='+encodeURIComponent('Project enquiry — MACHO')+'&body='+encodeURIComponent(message);
+       const mail='mailto:contact@macho.studio?subject='+encodeURIComponent('Project enquiry — MACHO')+'&body='+encodeURIComponent(message);
        const wa='https://wa.me/2349160956794?text='+encodeURIComponent(message);
        const options=$('.macho-send-options',form);options.replaceChildren();
        const p=document.createElement('p');p.textContent='Your message is ready. Choose how to send it. Nothing has been sent yet.';

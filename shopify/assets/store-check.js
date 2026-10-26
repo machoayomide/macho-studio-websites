@@ -142,7 +142,7 @@ function finish(){
  const copy=$('#check-copy');copy.onclick=async()=>{try{await navigator.clipboard.writeText(text);copy.textContent='COPIED ✓';setTimeout(()=>copy.textContent='COPY MY PLAN ↗',2600)}catch(e){copy.textContent='COPY NOT AVAILABLE';setTimeout(()=>copy.textContent='COPY MY PLAN ↗',2600)}};
  const contact=$('#check-contact');contact.href='/contact/?assessment=1&service='+encodeURIComponent(recs[0].slug);
  contact.onclick=()=>{try{sessionStorage.setItem('macho_shopify_assessment_v1',JSON.stringify({summary:text,created:Date.now(),primary:recs[0].slug}))}catch(e){/* optional transfer; users can still copy their plan */}};
- const email=$('#check-email');email.href='mailto:machomanexpert@gmail.com?subject='+encodeURIComponent('MACHO store check: request a review')+'&body='+encodeURIComponent(text.slice(0,6000)+'\n\nPlease contact me to discuss.');
+ const email=$('#check-email');email.href='mailto:contact@macho.studio?subject='+encodeURIComponent('MACHO store check: request a review')+'&body='+encodeURIComponent(text.slice(0,6000)+'\n\nPlease contact me to discuss.');
  const whatsapp=$('#check-whatsapp');whatsapp.href='https://wa.me/2349160956794?text='+encodeURIComponent(text.slice(0,3800)+'\n\nI would like help reviewing my store.');
  $('#check-result-heading').textContent=(answers.age==='not-live')?'Your store launch priorities.':'Here are areas worth reviewing.';
  $('#check-result-subtitle').textContent='This is your complete self-reported store snapshot with potential issues, what an expert should verify, and services worth considering. It is not a completed Shopify audit.';

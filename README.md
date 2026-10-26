@@ -45,6 +45,6 @@ Cloudflare Pages currently supports **up to 5 Git-integrated Pages projects per 
 
 Do not commit credentials, API tokens, secrets, customer data, or WordPress config files. Static forms must either use a real submission service or clearly hand off to WhatsApp/email; do not falsely report a successful message delivery.
 
-Public contact: `machomanexpert@gmail.com` · WhatsApp `https://wa.me/2349160956794`.
+Public contact: `hello@macho.studio`; form enquiries: `contact@macho.studio` · WhatsApp `https://wa.me/2349160956794`.
 
 WordPress PHP and MySQL cannot run on Cloudflare Pages. Static site markup, styles, scripts and assets can be reused for a later WordPress rebuild.
