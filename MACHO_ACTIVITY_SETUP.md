@@ -44,9 +44,9 @@ Add this to the **Shopify Pages project** to access the dashboard. Optionally ad
 
 **Never put the key in a query string.** The dashboard accepts it only through an Authorization header and keeps it in memory while the page is open.
 
-Dashboard: `https://shopify.machostudio.dpdns.org/macho-activity/`
+Dashboard: `https://shopify.macho.studio/macho-activity/`
 
-After deployment to production, the corresponding path is `https://shopify.machostudio.dpdns.org/macho-activity/`. The dashboard page is published; storage and delivery depend on the settings below.
+After deployment to production, the corresponding path is `https://shopify.macho.studio/macho-activity/`. The dashboard page is published; storage and delivery depend on the settings below.
 
 ## Step 3: Telegram notifications (optional)
 
@@ -65,7 +65,7 @@ Telegram messages will carry coarse information such as:
 ```
 👁 New page view
 2026-10-14T14:00:00Z
-🏠 shopify.machostudio.dpdns.org
+🏠 shopify.macho.studio
 🔖 Session 8f41c5a… / View 3e12c7f…
 📄 /store-check/
 📱 Desktop · 🌍 NG
