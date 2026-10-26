@@ -65,6 +65,8 @@ function settings(){
  button.onclick=()=>banner();footer.append(button);
 }
 function attachActions(){
+ document.addEventListener('macho:project-open',e=>{if(enabled)emit('project_view',{source:String(e.detail?.source||'').slice(0,40)})});
+ document.addEventListener('submit',e=>{if(enabled&&e.target.matches('.macho-quick-form'))emit('brief_prepared',{channel:'popup'})});
  document.addEventListener('click',e=>{
   if(!enabled)return;
   const link=e.target.closest('a[href]'),button=e.target.closest('button');
