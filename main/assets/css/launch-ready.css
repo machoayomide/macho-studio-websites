@@ -1,0 +1,89 @@
+/* MACHO launch readiness components — 26 Oct 2026 */
+.macho-dialog{border:0;padding:0;background:transparent;color:#182332;max-width:min(94vw,1020px);max-height:min(92dvh,980px);width:100%;overflow:visible}
+.macho-dialog::backdrop{background:rgba(8,14,28,.8);backdrop-filter:blur(12px)}
+.macho-dialog-panel{background:#f7f5f1;position:relative;border-radius:22px;max-height:90dvh;overflow:auto;overscroll-behavior:contain;box-shadow:0 30px 100px #020b18a6;scrollbar-gutter:stable}
+.macho-dialog-close{position:sticky;float:right;top:15px;right:15px;z-index:8;border:1px solid #c8d0d7;background:#fff;border-radius:50px;padding:10px 17px;cursor:pointer;color:#122034;font:700 13px/1.1 inherit;margin:15px 15px -10px 0}
+.macho-dialog-close:hover,.macho-dialog-close:focus-visible{background:#dae4fa;outline:2px solid #6b82bb;outline-offset:2px}
+.macho-dialog-content{padding:clamp(28px,5vw,70px)}
+.macho-project-intro{padding:8px 0 24px;border-bottom:1px solid #bdc7d1}
+.macho-project-intro .kicker{font-size:12px;color:#637aa2;letter-spacing:.12em}
+.macho-project-intro h1{font-size:clamp(30px,4.2vw,60px);line-height:1.07;color:#182332;letter-spacing:-.04em;margin:18px 0}
+.macho-project-intro p{font-size:clamp(16px,1.5vw,20px);line-height:1.65;color:#576b82}
+.macho-project-dialog .study-hero-art{margin:28px 0 35px}
+.macho-project-dialog .study-hero-art img{max-height:340px;max-width:100%;object-fit:contain;border-radius:12px}
+.macho-project-dialog .study-hero-art figcaption{font-size:12px;color:#6d7685}
+.macho-project-dialog .study-main{display:grid;grid-template-columns:minmax(165px,.55fr) minmax(0,1.45fr);gap:clamp(24px,4vw,60px)}
+.macho-project-dialog .study-sidebar{border-right:1px solid #c9ced5;padding-right:20px}
+.macho-project-dialog .study-sidebar dt{color:#66788d;font-size:12px;margin:10px 0}
+.macho-project-dialog .study-sidebar dd{margin:0 0 15px}
+.macho-project-dialog .study-story h2{font-size:clamp(24px,3vw,38px);margin:12px 0;color:#1c2837}
+.macho-project-dialog .study-story p,.macho-project-dialog .study-focus{color:#4d6075;line-height:1.75}
+.macho-project-dialog .study-story .small-index{display:block;margin-top:24px;color:#5b769b}
+.macho-project-dialog .study-note{padding:18px;background:#e8edf2;border-radius:10px;margin:20px 0;color:#586b79}
+.macho-project-source-note{display:block;color:#6b768a;font-size:12px;margin:10px 0}
+.macho-case-interactive{cursor:pointer}
+.macho-case-interactive:focus-within{outline:2px solid #8199da;outline-offset:4px}
+.macho-contact-dialog{max-width:min(94vw,750px)}
+.macho-quick-form{padding:clamp(24px,5vw,55px);display:block}
+.macho-modal-eyebrow{letter-spacing:.17em;font-size:12px;font-weight:700;color:#6177a7}
+.macho-quick-form h2{font-size:clamp(28px,4vw,49px);line-height:1.1;letter-spacing:-.045em;margin:12px 0}
+.macho-quick-form>p{color:#536780;line-height:1.65;margin-bottom:22px}
+.macho-quick-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0}
+.macho-quick-fields label{display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:700;color:#243149}
+.macho-quick-fields label.macho-field-full{grid-column:1/-1}
+.macho-quick-fields input,.macho-quick-fields select,.macho-quick-fields textarea{width:100%;box-sizing:border-box;min-width:0;font:inherit;font-weight:400;background:white;color:#172234;border:1px solid #b7c3d2;border-radius:10px;padding:14px;line-height:1.3}
+.macho-quick-fields :is(input,select,textarea):focus{outline:2px solid #7895d6;outline-offset:1px}
+.macho-primary-action,.macho-outline-action{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #172238;cursor:pointer;text-decoration:none;border-radius:9px;background:#152036;color:white!important;font:700 14px/1.3 inherit;padding:14px 22px;margin:4px 10px 4px 0}
+.macho-primary-action:hover{background:#2f4364}.macho-outline-action{background:transparent!important;color:#182635!important}
+.macho-quick-form .macho-privacy-note{font-size:12px;margin:14px 0;color:#5f6d81}
+.macho-quick-form .macho-privacy-note a{color:#294a89;text-decoration:underline}
+.macho-send-options{background:#e6edfa;border:1px solid #bdcee9;padding:17px;border-radius:12px;margin:18px 0}
+.macho-send-options[hidden]{display:none}
+.macho-send-options p{font-size:14px;color:#304969;margin:0 0 12px}
+.macho-skills-section{background:#e8e9e7;padding:clamp(65px,9vw,135px) 0;color:#182332}
+.macho-skills-heading{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:35px}
+.macho-skills-heading h2{font-size:clamp(39px,6vw,78px);letter-spacing:-.065em;line-height:1.04;margin:16px 0}
+.macho-skills-heading p{color:#58687b;max-width:430px;line-height:1.7}
+.macho-skills-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.macho-skill-card{padding:25px;border:1px solid #cbd2d9;border-radius:15px;background:#f7f6f2;min-height:175px;display:flex;flex-direction:column;gap:17px;justify-content:space-between}
+.macho-skill-card .small-index{color:#7187af}
+.macho-skill-card h3{font-size:clamp(21px,2vw,28px);margin:0;color:#1c2837}
+.macho-skill-card p{line-height:1.6;color:#506175;font-size:14px;margin:0}
+.macho-skill-mark{display:flex;gap:5px;align-items:center;white-space:nowrap}
+.macho-skill-mark i{display:inline-block;width:26px;height:6px;border-radius:10px;background:#d6dce4}
+.macho-skill-mark i.is-active{background:#6a81ae}
+.macho-skill-label{font-size:11px;letter-spacing:.06em;font-weight:700;color:#546b93;text-transform:uppercase}
+.macho-skills-footnote{font-size:12px;line-height:1.6;color:#5e6c7d;margin-top:20px;max-width:690px}
+.site-footer.macho-footer-redesign{background:#101724!important;color:#f5f5f2!important;padding:clamp(70px,8vw,115px) 0 28px}
+.macho-footer-redesign .footer-cta{grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);padding:0 0 clamp(42px,6vw,75px);gap:clamp(24px,5vw,80px);align-items:end;border-bottom:1px solid #60708b52}
+.macho-footer-redesign .footer-cta h2{font-size:clamp(54px,8vw,110px);line-height:.95;letter-spacing:-.075em}
+.macho-footer-redesign .footer-cta h2 em{color:#a3b7ee;font-style:normal}
+.macho-footer-redesign .footer-cta-side{max-width:360px;margin-left:auto}
+.macho-footer-redesign .footer-cta-side p{color:#b6c3d6;line-height:1.8}
+.macho-footer-redesign .macho-footer-services{display:grid;grid-template-columns:minmax(0,1.05fr) repeat(2,minmax(0,1fr));gap:clamp(28px,5vw,85px);padding:clamp(38px,5vw,72px) 0!important;border-bottom:1px solid #60708b52}
+.macho-footer-redesign .macho-footer-services nav,.macho-footer-redesign .macho-footer-direct{display:flex;flex-direction:column;gap:12px}
+.macho-footer-redesign .macho-footer-services a{color:#e1e9fa;text-decoration:none;transition:color .15s}
+.macho-footer-redesign .macho-footer-services a:hover{color:#a6c5ff}
+.macho-footer-redesign .macho-footer-services h3{color:#91a7d5;font-size:12px;letter-spacing:.16em;margin:0 0 16px}
+.macho-footer-redesign .macho-footer-services p{color:#b6c3d6;font-size:15px;line-height:1.7}
+.macho-footer-redesign .footer-bottom{padding-top:24px;color:#b6c3d6}
+.macho-footer-redesign .footer-brand{font-size:34px;font-weight:800;color:white!important;letter-spacing:-.07em}
+@media(max-width:840px){
+ .macho-project-dialog .study-main{display:block}.macho-project-dialog .study-sidebar{border-right:0;border-bottom:1px solid #c9ced5;padding:0 0 18px;margin-bottom:20px}
+ .macho-skills-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .macho-skills-heading{display:block}
+ .macho-footer-redesign .footer-cta{grid-template-columns:1fr}
+ .macho-footer-redesign .footer-cta-side{margin-left:0}
+ .macho-footer-redesign .macho-footer-services{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .macho-footer-redesign .macho-footer-services>div:first-child{grid-column:1/-1}
+}
+@media(max-width:540px){
+ .macho-dialog{width:100%;max-width:100%;max-height:100dvh;margin:0;inset:0;}
+ .macho-dialog-panel{max-height:100dvh;min-height:100dvh;border-radius:0}
+ .macho-dialog-content{padding:22px}
+ .macho-quick-fields,.macho-skills-grid{grid-template-columns:1fr}
+ .macho-footer-redesign .macho-footer-services{grid-template-columns:1fr}
+ .macho-footer-redesign .macho-footer-services>div:first-child{grid-column:auto}
+ .macho-footer-redesign .footer-bottom{align-items:start;flex-direction:column;gap:18px}
+}
+@media(prefers-reduced-motion:reduce){.macho-footer-redesign *,.macho-dialog *{scroll-behavior:auto!important;transition:none!important}}
