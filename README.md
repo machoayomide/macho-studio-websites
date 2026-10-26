@@ -6,8 +6,8 @@ Production source for the **Macho Studio** portfolio and specialist sites. The f
 
 | Site | Directory | Target domain | State |
 | --- | --- | --- | --- |
-| Macho Studio main portfolio | `main/` | `machostudio.dpdns.org` | Source uploaded; Cloudflare Git deployment pending |
-| Shopify specialist site | `shopify/` | `shopify.machostudio.dpdns.org` | Source uploaded; Cloudflare Git deployment pending |
+| Macho Studio main portfolio | `main/` | `macho.studio` | Source uploaded; Cloudflare Git deployment pending |
+| Shopify specialist site | `shopify/` | `shopify.macho.studio` | Source uploaded; Cloudflare Git deployment pending |
 | Apps, Web, Wix, CRM, Automation | Future projects/repositories | Separate specialist subdomains | Planned |
 
 Both existing folders contain their own `index.html`, assets, and page routes. Each site is an independent standalone website.

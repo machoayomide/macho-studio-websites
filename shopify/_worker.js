@@ -83,7 +83,16 @@ function readiness(env){
 }
 export default {
  async fetch(request,env,ctx){
-  const path=new URL(request.url).pathname;
+  const requestedUrl=new URL(request.url);
+  // Preserve existing bookmarks on the legacy Shopify host while keeping
+  // API endpoints available to older opt-in activity clients.
+  if(requestedUrl.hostname==='shopify.machostudio.dpdns.org' &&
+     (request.method==='GET'||request.method==='HEAD') &&
+     !requestedUrl.pathname.startsWith('/api/')){
+    requestedUrl.hostname='shopify.macho.studio';
+    return Response.redirect(requestedUrl.toString(),301);
+  }
+  const path=requestedUrl.pathname;
   if(path==="/api/activity/ready")return response(readiness(env));
   if(path==="/api/activity/test")return testNotification(request,env,ctx);
   if(path==="/api/activity")return event(request,env,ctx);
