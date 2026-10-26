@@ -11,6 +11,7 @@ const EVENTS={
  store_check_start:"🧭 Store Check started",store_check_step:"🧭 Store Check progress",
  store_check_complete:"✅ Store Check completed",store_check_restart:"🔄 Store Check restarted",
  service_view:"🛠 Service page visited",service_click:"🛠 Service explored",
+ project_view:"📂 Portfolio project opened",
  contact_open:"💬 Contact page visited",brief_prepared:"📝 Project brief prepared",
  whatsapp_click:"📱 WhatsApp contact clicked",email_click:"✉️ Email contact clicked",
  assessment_handoff:"📋 Assessment enquiry opened",copy_report:"📑 Store report copied"
