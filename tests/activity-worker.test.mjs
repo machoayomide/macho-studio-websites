@@ -6,7 +6,7 @@ const originalFetch=globalThis.fetch;
 for(const site of ['main','shopify']){
  const source=await readFile(new URL('../'+site+'/_worker.js',import.meta.url),'utf8');
  const worker=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).default;
- const host=site==='main'?'https://machostudio.dpdns.org':'https://shopify.machostudio.dpdns.org';
+ const host=site==='main'?'https://macho.studio':'https://shopify.macho.studio';
  const waits=[],store=new Map();let ttl=0,sent=0;
  const ctx={waitUntil:p=>waits.push(p)};
  const kv={put:async(k,v,opts)=>{store.set(k,JSON.parse(v));ttl=opts.expirationTtl},list:async()=>({keys:[...store.keys()].sort().map(name=>({name}))}),get:async k=>store.get(k)};
