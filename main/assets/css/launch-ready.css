@@ -87,3 +87,20 @@
  .macho-footer-redesign .footer-bottom{align-items:start;flex-direction:column;gap:18px}
 }
 @media(prefers-reduced-motion:reduce){.macho-footer-redesign *,.macho-dialog *{scroll-behavior:auto!important;transition:none!important}}
+
+/* Editorial footer labels and improved contact affordances */
+.macho-footer-redesign .macho-footer-services nav::before,
+.macho-footer-redesign .macho-footer-direct::before{
+ font-size:11px;font-weight:800;letter-spacing:.17em;color:#8ea5d0;
+ display:block;margin:0 0 14px
+}
+.macho-footer-redesign .macho-footer-services nav::before{content:"SERVICES"}
+.macho-footer-redesign .macho-footer-direct::before{content:"CONNECT"}
+.macho-footer-redesign .footer-bottom .footer-nav{display:flex;gap:24px;flex-wrap:wrap}
+.macho-footer-redesign .back-to-top{color:#e4ebfa}
+.macho-footer-redesign .button-light{background:#f0f1ed;color:#102035;border-radius:7px}
+.macho-footer-redesign .button-light:hover{background:#bdcdef}
+.macho-footer-redesign .macho-footer-direct a:first-of-type{overflow-wrap:anywhere}
+.macho-dialog-close{font-family:inherit;font-weight:700}
+.macho-project-dialog .study-story>a.button{display:inline-flex;margin-top:15px}
+.macho-skill-card:focus-within{outline:2px solid #8498bb;outline-offset:2px}
