@@ -1,6 +1,10 @@
 /* MACHO site interactions: progressive enhancements, no external dependencies. */
 (() => {
  'use strict';
+ // Activity is opt-in and only activates after the Cloudflare backend reports readiness.
+ const activity=document.createElement('script');
+ activity.src='/assets/js/visitor-activity.js?v=20261026-launch1';
+ activity.defer=true;document.body.append(activity);
  if (!document.body || !('HTMLDialogElement' in window)) return;
  const $=(q,r=document)=>r.querySelector(q);
  const onContactPage=/^\/contact(?:\.html)?\/?$/.test(location.pathname);
