@@ -104,3 +104,16 @@
 .macho-dialog-close{font-family:inherit;font-weight:700}
 .macho-project-dialog .study-story>a.button{display:inline-flex;margin-top:15px}
 .macho-skill-card:focus-within{outline:2px solid #8498bb;outline-offset:2px}
+
+/* The Practice: original user-approved portrait instead of placeholder seal */
+.intro-section .intro-grid{grid-template-columns:minmax(230px,.54fr) minmax(0,1.46fr);gap:clamp(40px,6vw,105px);align-items:center}
+.intro-section .intro-side{display:flex;flex-direction:column;gap:27px;justify-content:center}
+.macho-practice-portrait{width:100%;max-width:390px;margin:0}
+.macho-practice-portrait img{display:block;width:100%;height:auto;aspect-ratio:1312/1199;object-fit:contain;border-radius:18px;background:#223145;box-shadow:0 28px 60px rgba(20,38,61,.14)}
+.macho-practice-portrait figcaption{display:flex;flex-direction:column;gap:5px;font-size:10px;letter-spacing:.13em;line-height:1.6;font-weight:700;color:#4d6076;margin-top:15px}
+.macho-practice-portrait figcaption span{font-weight:500;color:#697b8d}
+@media(max-width:760px){
+ .intro-section .intro-grid{grid-template-columns:1fr;gap:28px}
+ .intro-section .intro-side{gap:18px}
+ .macho-practice-portrait{max-width:min(100%,370px)}
+}
