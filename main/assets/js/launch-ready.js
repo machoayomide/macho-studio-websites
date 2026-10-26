@@ -70,28 +70,49 @@
      form.innerHTML=[
        '<p class="macho-modal-eyebrow">START A PROJECT</p>',
        '<h2 id="macho-quick-title">Let’s build something useful.</h2>',
-       '<p>Tell me about your project. Nothing is sent until you choose your email or WhatsApp app.</p>',
+       '<p>Tell me about your project and send your enquiry directly from this website.</p>',
        '<div class="macho-quick-fields">',
        '<label>Your name <input name="name" autocomplete="name" required maxlength="120" placeholder="Your name"></label>',
        '<label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com"></label>',
        '<label>Service <select name="service"><option>Not sure yet</option><option>Shopify & ecommerce</option><option>Mobile app development</option><option>Website development</option><option>Wix Studio & Velo</option><option>CRM & integrations</option><option>AI & automation</option></select></label>',
        '<label>Timeline <select name="timeline"><option>Flexible / undecided</option><option>As soon as possible</option><option>Within a month</option><option>1–3 months</option></select></label>',
-       '<label class="macho-field-full">What should we build or fix? <textarea name="message" rows="4" required maxlength="3000" placeholder="Your goals, challenges and project details"></textarea></label>',
-       '</div><button class="macho-primary-action" type="submit">Prepare message ↗</button>',
-       '<p class="macho-privacy-note">This popup does not save or send your details automatically. <a href="/privacy">Privacy</a> · <a href="/contact">Full contact page</a></p>',
+       '<label class="macho-field-full">What should we build or fix? <textarea name="message" rows="4" required minlength="10" maxlength="3000" placeholder="Your goals, challenges and project details"></textarea></label>',
+       '</div><label class="macho-hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">Your website <input name="website" tabindex="-1" autocomplete="off"></label><button class="macho-primary-action" type="submit">Send enquiry ↗</button>',
+       '<p class="macho-privacy-note">Your project details are sent securely to MACHO when you submit. <a href="/privacy">Privacy</a> · <a href="/contact">Full contact page</a></p>',
        '<div class="macho-send-options" hidden aria-live="polite"></div>'
      ].join('');
-     form.addEventListener('submit',e=>{
-       e.preventDefault();if(!form.reportValidity())return;
-       const d=new FormData(form),v=k=>String(d.get(k)||'').trim();
-       const message=['MACHO PROJECT ENQUIRY','Name: '+v('name'),'Email: '+v('email'),'Service: '+v('service'),'Timeline: '+v('timeline'),'','Project details:',v('message')].join('\n');
-       const mail='mailto:contact@macho.studio?subject='+encodeURIComponent('Project enquiry — MACHO')+'&body='+encodeURIComponent(message);
-       const wa='https://wa.me/2349160956794?text='+encodeURIComponent(message);
-       const options=$('.macho-send-options',form);options.replaceChildren();
-       const p=document.createElement('p');p.textContent='Your message is ready. Choose how to send it. Nothing has been sent yet.';
-       const a=document.createElement('a');a.href=mail;a.className='macho-primary-action';a.textContent='Open email ↗';
-       const b=document.createElement('a');b.href=wa;b.target='_blank';b.rel='noopener noreferrer';b.className='macho-outline-action';b.textContent='Open WhatsApp ↗';
-       options.append(p,a,b);options.hidden=false;
+     form.addEventListener('submit',async e=>{
+       e.preventDefault();
+       if(!form.reportValidity())return;
+       const button=$('button[type="submit"]',form);
+       if(button.disabled)return;
+       const data=new FormData(form),v=k=>String(data.get(k)||'').trim();
+       const values={
+         name:v('name'),email:v('email'),service:v('service'),timeline:v('timeline'),
+         budget:'',message:v('message'),website:v('website')
+       };
+       const options=$('.macho-send-options',form);
+       options.replaceChildren();
+       const notice=document.createElement('p');notice.textContent='Sending your enquiry securely…';
+       options.append(notice);options.hidden=false;
+       button.disabled=true;button.textContent='Sending…';
+       try {
+         const {sendEnquiry}=await import('/assets/js/enquiry-api.js?v=20261027-form1');
+         await sendEnquiry(values);
+         notice.textContent='Your enquiry was accepted for sending. Thank you — MACHO will review it and reply by email.';
+         form.reset();
+         button.textContent='Send another enquiry ↗';
+       }catch(error){
+         notice.textContent=error?.message||'We could not send your enquiry. Your details remain in the form.';
+         const brief=['MACHO PROJECT ENQUIRY','Name: '+values.name,'Email: '+values.email,
+           'Service: '+values.service,'Timeline: '+values.timeline,'','Project details:',values.message].join('\n');
+         const wa=document.createElement('a');
+         wa.href='https://wa.me/2349160956794?text='+encodeURIComponent(brief);
+         wa.className='macho-outline-action';wa.target='_blank';wa.rel='noopener noreferrer';
+         wa.textContent='Use WhatsApp instead ↗';
+         options.append(wa);
+         button.textContent='Try sending again ↗';
+       }finally{button.disabled=false}
      });
      contact.panel.append(form);
    }
