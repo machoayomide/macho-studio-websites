@@ -39,7 +39,7 @@ window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFr
  document.querySelectorAll('footer .big-brand').forEach(el=>el.innerHTML='MACHO<span>.</span>');
  document.querySelectorAll('footer .footer-bottom > span:first-child').forEach(el=>el.textContent='© 2026 MACHO · Independent development.');
  document.querySelectorAll('footer .footer-brand > p').forEach(el=>el.textContent='Independent Shopify development, migrations, and connected ecommerce systems.');
- document.querySelectorAll('footer a[href*="machostudio.dpdns.org"]').forEach(a=>a.textContent='Explore MACHO ↗');
+ document.querySelectorAll('footer a[href*="macho.studio"]').forEach(a=>a.textContent='Explore MACHO ↗');
  document.querySelectorAll('footer .studio-disclaimer').forEach(el=>el.textContent='Shopify is a trademark of Shopify Inc. MACHO is independent and is not run by Shopify.');
 })();
 
