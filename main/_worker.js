@@ -82,12 +82,117 @@ function readiness(env){
  const storage=Boolean(env.ACTIVITY_LOG),notifications=Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID),dashboard=Boolean(env.ADMIN_DASHBOARD_KEY);
  return {enabled:storage||notifications,storage,notifications,dashboard,missing:[...(!storage?['ACTIVITY_LOG']:[]),...(!dashboard?['ADMIN_DASHBOARD_KEY']:[]),...(!env.TELEGRAM_BOT_TOKEN?['TELEGRAM_BOT_TOKEN']:[]),...(!env.TELEGRAM_CHAT_ID?['TELEGRAM_CHAT_ID']:[])]};
 }
+
+/* Visitor-supplied project details must never be written to the anonymous activity feed. */
+const enquiryAddress = value => typeof value === 'string' && value.length <= 254 &&
+  /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value) && !/[\r\n]/.test(value);
+const field = (data, key, limit) => typeof data[key] === 'string' ? data[key].trim().slice(0, limit + 1) : '';
+async function enquiryRateKey(request) {
+  const ip = request.headers.get('CF-Connecting-IP') || '';
+  if (!ip) return null;
+  const hour = Math.floor(Date.now() / 3600000);
+  const bytes = new TextEncoder().encode('macho-enquiry:' + hour + ':' + ip);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return 'rl:enquiry:' + hour + ':' + [...new Uint8Array(digest)].map(n => n.toString(16).padStart(2, '0')).join('');
+}
+async function sendEnquiry(request, env) {
+  if (request.method !== 'POST') return response({error:'Method not allowed'},405);
+  if (!sameOrigin(request)) return response({error:'Request origin not accepted'},403);
+  if (!(request.headers.get('Content-Type') || '').toLowerCase().startsWith('application/json'))
+    return response({error:'JSON required'},415);
+  if (Number(request.headers.get('Content-Length') || '0') > 8000)
+    return response({error:'Enquiry is too long'},413);
+  let input;
+  try {
+    const raw = await request.text();
+    if (raw.length > 8000) return response({error:'Enquiry is too long'},413);
+    input = JSON.parse(raw);
+  } catch { return response({error:'Invalid enquiry'},400); }
+  if (!input || typeof input !== 'object' || Array.isArray(input))
+    return response({error:'Invalid enquiry'},400);
+  // Hidden honeypot; always reject without forwarding if filled.
+  if (input.website) return response({error:'Unable to process this enquiry'},400);
+  const name=field(input,'name',120),email=field(input,'email',254),
+        service=field(input,'service',90),timeline=field(input,'timeline',90),
+        budget=field(input,'budget',90),message=field(input,'message',3000);
+  if (name.length < 2 || name.length > 120 || !enquiryAddress(email) ||
+      message.length < 10 || message.length > 3000 ||
+      service.length > 90 || timeline.length > 90 || budget.length > 90)
+    return response({error:'Please enter a valid name, email and project details (at least 10 characters).'},400);
+  const recipient=String(env.CONTACT_TO_EMAIL||'').trim();
+  const from=String(env.CONTACT_FROM_EMAIL||'enquiries@macho.studio').trim();
+  if (!enquiryAddress(recipient) || !enquiryAddress(from) || !from.toLowerCase().endsWith('@macho.studio') ||
+      !(env.EMAIL || env.RESEND_API_KEY))
+    return response({error:'Online enquiries are temporarily unavailable. Please use WhatsApp or contact MACHO directly.'},503);
+
+  // Anonymous, time-scoped abuse prevention: never store sender details or the IP.
+  let rateKey=null;
+  if (env.ACTIVITY_LOG) {
+    rateKey=await enquiryRateKey(request);
+    if(rateKey) {
+      try {
+        const count=Number(await env.ACTIVITY_LOG.get(rateKey) || '0');
+        if(count >= 5) return response({error:'Too many submissions. Please try again later.'},429);
+      } catch { /* Email flow should not be blocked by analytics storage. */ }
+    }
+  }
+  const body=[
+    'MACHO PROJECT ENQUIRY',
+    'Name: '+name,
+    'Email: '+email,
+    'Service: '+(service||'Not specified'),
+    'Timeline: '+(timeline||'Flexible'),
+    'Budget: '+(budget||'Not specified'),
+    '',
+    'Project details:',
+    message,
+    '',
+    'Submitted through the MACHO website.'
+  ].join('\n');
+
+  try {
+    if (env.EMAIL) {
+      const result=await env.EMAIL.send({
+        to:recipient, from:{name:'MACHO Website',email:from},
+        replyTo:email, subject:'New project enquiry — MACHO', text:body
+      });
+      if (!result || !result.messageId) throw new Error('No provider receipt');
+    } else {
+      const mail=await fetch('https://api.resend.com/emails',{
+        method:'POST',
+        headers:{
+          'Authorization':'Bearer '+env.RESEND_API_KEY,
+          'Content-Type':'application/json',
+          'User-Agent':'MACHO-Portfolio/1.0'
+        },
+        body:JSON.stringify({
+          from:'MACHO Website <'+from+'>',to:[recipient],
+          reply_to:email,subject:'New project enquiry — MACHO',text:body
+        })
+      });
+      if (!mail.ok) throw new Error('Email provider rejected request');
+      const receipt=await mail.json();
+      if (!receipt || !receipt.id) throw new Error('No provider receipt');
+    }
+  } catch (_) {
+    return response({error:'We could not send your enquiry. Nothing was confirmed. Please retry or contact MACHO on WhatsApp.'},502);
+  }
+  if(rateKey && env.ACTIVITY_LOG) {
+    try {
+      const count=Number(await env.ACTIVITY_LOG.get(rateKey) || '0');
+      await env.ACTIVITY_LOG.put(rateKey,String(count+1),{expirationTtl:3700});
+    } catch { /* Already accepted by the mail provider. Never misreport delivery. */ }
+  }
+  return response({ok:true,accepted:true},202);
+}
+
 export default {
  async fetch(request,env,ctx){
   const path=new URL(request.url).pathname;
   const clean=path.replace(/\/$/, "").replace(/\.html$/, "");
   const serviceRoutes={"/practice-shopify":"https://shopify.macho.studio/","/services/shopify":"https://shopify.macho.studio/","/shopify":"https://shopify.macho.studio/","/services/apps":"/practice-apps","/services/web":"/practice-web","/services/wix":"/practice-wix","/services/crm":"/practice-crm","/services/automation":"/practice-automation"};
   if(serviceRoutes[clean])return Response.redirect(new URL(serviceRoutes[clean],request.url),301);
+  if(path==="/api/enquiry")return sendEnquiry(request,env);
   if(path==="/api/activity/ready")return response(readiness(env));
   if(path==="/api/activity/test")return testNotification(request,env,ctx);
   if(path==="/api/activity")return event(request,env,ctx);
