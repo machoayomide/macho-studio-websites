@@ -55,3 +55,27 @@ html:not(.macho-orbit-ready) .macho-orbit-story,html.macho-orbit-stacked .macho-
  .about-section .about-id{width:min(100%,370px)}
  .about-section .about-grid{gap:45px}
 }
+
+/* Original portrait supplied 26 October 2026. Display every source pixel,
+   with no generated substitutions, no fixed portrait crop, and no stretching. */
+.about-section .portrait-window,
+.portrait-about .portrait-window,
+.portrait-compact .portrait-window{
+  aspect-ratio:1312/1199!important;
+  background:#263143;
+}
+.about-section .portrait-window img.macho-solo-portrait,
+.portrait-about .portrait-window img.macho-solo-portrait,
+.portrait-compact .portrait-window img.macho-solo-portrait{
+  display:block!important;
+  position:relative!important;
+  inset:auto!important;
+  width:100%!important;
+  height:auto!important;
+  max-width:100%!important;
+  object-fit:contain!important;
+  filter:none!important;
+}
+@media (max-width:760px){
+  .about-section .about-id{width:min(100%,410px)}
+}
