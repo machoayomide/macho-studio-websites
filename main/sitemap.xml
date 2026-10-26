@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://macho.studio/</loc></url>
-  <url><loc>https://macho.studio/about.html</loc></url>
-  <url><loc>https://macho.studio/services.html</loc></url>
-  <url><loc>https://macho.studio/work.html</loc></url>
-  <url><loc>https://macho.studio/contact.html</loc></url>
-  <url><loc>https://macho.studio/privacy.html</loc></url>
-  <url><loc>https://macho.studio/case-ewe.html</loc></url>
-  <url><loc>https://macho.studio/case-jewelry.html</loc></url>
-  <url><loc>https://macho.studio/case-migration.html</loc></url>
-  <url><loc>https://macho.studio/case-payments.html</loc></url>
-  <url><loc>https://macho.studio/case-ring.html</loc></url>
-  <url><loc>https://macho.studio/case-seo.html</loc></url>
-  <url><loc>https://macho.studio/practice-shopify.html</loc></url>
-  <url><loc>https://macho.studio/practice-apps.html</loc></url>
-  <url><loc>https://macho.studio/practice-crm.html</loc></url>
-  <url><loc>https://macho.studio/practice-web.html</loc></url>
-  <url><loc>https://macho.studio/practice-wix.html</loc></url>
-  <url><loc>https://macho.studio/practice-automation.html</loc></url>
+  <url><loc>https://macho.studio/about</loc></url>
+  <url><loc>https://macho.studio/services</loc></url>
+  <url><loc>https://macho.studio/work</loc></url>
+  <url><loc>https://macho.studio/contact</loc></url>
+  <url><loc>https://macho.studio/privacy</loc></url>
+  <url><loc>https://macho.studio/case-ewe</loc></url>
+  <url><loc>https://macho.studio/case-jewelry</loc></url>
+  <url><loc>https://macho.studio/case-migration</loc></url>
+  <url><loc>https://macho.studio/case-payments</loc></url>
+  <url><loc>https://macho.studio/case-ring</loc></url>
+  <url><loc>https://macho.studio/case-seo</loc></url>
+  <url><loc>
+  <url><loc>https://macho.studio/practice-apps</loc></url>
+  <url><loc>https://macho.studio/practice-crm</loc></url>
+  <url><loc>https://macho.studio/practice-web</loc></url>
+  <url><loc>https://macho.studio/practice-wix</loc></url>
+  <url><loc>https://macho.studio/practice-automation</loc></url>
 </urlset>
