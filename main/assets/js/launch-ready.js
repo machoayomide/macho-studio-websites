@@ -27,6 +27,7 @@
    const content=document.createElement('div');content.className='macho-dialog-content';
    const pending=document.createElement('p');pending.setAttribute('role','status');pending.textContent='Loading project details…';
    content.append(pending);panel.append(content);dialog.showModal();
+   document.dispatchEvent(new CustomEvent('macho:project-open',{detail:{source:match[1]}}));
    const filename='/case-'+match[1]+'.html';
    const id=Symbol('case');dialog._load=id;
    fetch(filename,{credentials:'same-origin'}).then(r=>{if(!r.ok)throw new Error('Unavailable');return r.text()}).then(html=>{
