@@ -23,13 +23,25 @@
    status.textContent='Sending your project enquiry securely…';
    output.hidden=true;
    button.disabled=true;button.textContent='Sending…';
+   let accepted=false;
    try{
-     const {sendEnquiry}=await import('/assets/js/enquiry-api.js?v=20261027-form1');
+     // Load both UI and delivery code BEFORE sending so a missing UI module
+     // can never turn a successfully sent enquiry into a misleading error.
+     const [{sendEnquiry},{showEnquirySuccess}]=await Promise.all([
+       import('/assets/js/enquiry-api.js?v=20261027-form1'),
+       import('/assets/js/enquiry-success.js?v=20261027-v1')
+     ]);
      await sendEnquiry(values);
-     status.textContent='Your enquiry was accepted for sending. Thank you — MACHO will review your message and reply to your email.';
+     accepted=true;
      form.reset();
+     status.textContent='Enquiry accepted. Thank you for getting in touch with MACHO.';
      button.textContent='Send another enquiry ↗';
+     showEnquirySuccess();
    }catch(error){
+     if(accepted){
+       status.textContent='Your enquiry was accepted by our email service. Thank you — MACHO will review your message and reply by email.';
+       return;
+     }
      status.textContent=error?.message||'The enquiry could not be sent. Your details are still in the form.';
      const wa=document.getElementById('macho-whatsapp-link');
      if(wa){

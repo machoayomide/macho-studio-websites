@@ -96,13 +96,25 @@
        const notice=document.createElement('p');notice.textContent='Sending your enquiry securely…';
        options.append(notice);options.hidden=false;
        button.disabled=true;button.textContent='Sending…';
+       let accepted=false;
        try {
-         const {sendEnquiry}=await import('/assets/js/enquiry-api.js?v=20261027-form1');
+         const [{sendEnquiry},{showEnquirySuccess}]=await Promise.all([
+           import('/assets/js/enquiry-api.js?v=20261027-form1'),
+           import('/assets/js/enquiry-success.js?v=20261027-v1')
+         ]);
          await sendEnquiry(values);
-         notice.textContent='Your enquiry was accepted for sending. Thank you — MACHO will review it and reply by email.';
+         accepted=true;
          form.reset();
          button.textContent='Send another enquiry ↗';
+         options.hidden=true;
+         if(contact.dialog.open)contact.dialog.close();
+         showEnquirySuccess();
        }catch(error){
+         if(accepted){
+           notice.textContent='Your enquiry has been accepted by our email service. Thank you for contacting MACHO.';
+           options.hidden=false;
+           return;
+         }
          notice.textContent=error?.message||'We could not send your enquiry. Your details remain in the form.';
          const brief=['MACHO PROJECT ENQUIRY','Name: '+values.name,'Email: '+values.email,
            'Service: '+values.service,'Timeline: '+values.timeline,'','Project details:',values.message].join('\n');
