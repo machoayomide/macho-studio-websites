@@ -12,6 +12,6 @@ const top=document.createElement('span');top.className='capability-category';top
 const heading=document.createElement('h3');heading.textContent=title;
 const arrow=document.createElement('span');arrow.className='capability-arrow';arrow.textContent='EXPLORE SERVICE ↗';
 card.append(top,heading,arrow);grid.append(card)}}
-number.textContent=amount+' of '+83+' capabilities';if(!amount){const empty=document.createElement('p');empty.className='capability-empty';empty.textContent='No exact match. Try another phrase or tell me what your store needs.';grid.append(empty)}}
+number.textContent=amount+' of '+83+' capabilities';if(!amount){const empty=document.createElement('p');empty.className='capability-empty';empty.textContent='No match found. Try other words or tell me what you need.';grid.append(empty)}}
 search.addEventListener('input',render);select.addEventListener('change',()=>{category=select.value;render()});render();
 })();

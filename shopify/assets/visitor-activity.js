@@ -49,7 +49,7 @@ function banner(){
  if(document.querySelector('.macho-activity-consent'))return;
  const b=document.createElement('aside');b.className='macho-activity-consent';b.setAttribute('aria-label','Visitor activity preference');
  const title=document.createElement('strong');title.textContent='Help MACHO understand visits?';
- const copy=document.createElement('p');copy.textContent='With your permission, we record anonymous page visits and interactions to improve this site and send activity alerts. No form contents or store financial answers are collected.';
+ const copy=document.createElement('p');copy.textContent='If you agree, we track page visits and button clicks to improve the site. We do not collect your form answers or sales numbers in these alerts.';
  const actions=document.createElement('div');actions.className='act-buttons';
  const allow=document.createElement('button');allow.type='button';allow.textContent='Allow activity';
  const decline=document.createElement('button');decline.type='button';decline.textContent='No thanks';
