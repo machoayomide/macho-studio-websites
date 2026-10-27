@@ -22,7 +22,7 @@ export function showEnquirySuccess(){
   <div class="macho-success-shell">
     <header class="macho-success-topbar">
       <span class="macho-success-brand">MACHO<i>.</i></span>
-      <span>PROJECT ENQUIRY &nbsp; / &nbsp; CONFIRMATION</span>
+      <span>PROJECT MESSAGE &nbsp; / &nbsp; SUCCESS</span>
     </header>
     <button type="button" class="macho-success-close" aria-label="Close success screen">Close ×</button>
     <div class="macho-success-content">
@@ -34,22 +34,22 @@ export function showEnquirySuccess(){
               <path d="m17.5 30.5 8 8L42.5 21" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <p class="macho-success-kicker">THANK YOU FOR REACHING OUT</p>
-          <h2 class="macho-success-title" id="macho-success-title">Your message<br><em>is on its way.</em></h2>
-          <p class="macho-success-copy" id="macho-success-copy">Your project enquiry has been accepted by MACHO's email service. I'll review what you shared and respond using the email address in your enquiry.</p>
-          <p class="macho-success-detail">You don't need to submit again. Email acceptance isn't a guarantee of final inbox delivery, but your request has been handed to our sending service.</p>
+          <p class="macho-success-kicker">THANK YOU FOR YOUR MESSAGE</p>
+          <h2 class="macho-success-title" id="macho-success-title">Thanks!<br><em>Message sent.</em></h2>
+          <p class="macho-success-copy" id="macho-success-copy">The email service has accepted your message. I will read it and reply to the email address you gave.</p>
+          <p class="macho-success-detail">You do not need to send it again. The email service has your message, but delivery to an inbox is not yet confirmed.</p>
           <div class="macho-success-actions">
-            <a href="/work" class="macho-success-primary">Explore my work <span aria-hidden="true">↗</span></a>
+            <a href="/work" class="macho-success-primary">See my work <span aria-hidden="true">↗</span></a>
             <button type="button" class="macho-success-secondary" data-close-success>Back to the website <span aria-hidden="true">↗</span></button>
           </div>
         </section>
         <aside class="macho-success-panel" aria-labelledby="macho-success-next">
           <p class="macho-success-panel-kicker">WHAT HAPPENS NEXT &nbsp; / &nbsp; 01–03</p>
-          <h3 id="macho-success-next">A good project starts<br><em>with a conversation.</em></h3>
+          <h3 id="macho-success-next">Good projects start<br><em>with a chat.</em></h3>
           <ol class="macho-success-steps">
-            <li><span>01</span><div><strong>I review your brief</strong><p>I'll look through the goals and details you've shared.</p></div></li>
-            <li><span>02</span><div><strong>We continue by email</strong><p>I'll reach out if I need more information or have a next step to suggest.</p></div></li>
-            <li><span>03</span><div><strong>We shape the approach</strong><p>We can then agree on the scope, direction, and how to move forward.</p></div></li>
+            <li><span>01</span><div><strong>I review your brief</strong><p>I will read what you told me about your project.</p></div></li>
+            <li><span>02</span><div><strong>We continue by email</strong><p>I will email you if I need more details or have a next step.</p></div></li>
+            <li><span>03</span><div><strong>We shape the approach</strong><p>Then we can agree on the work, price, and next steps.</p></div></li>
           </ol>
         </aside>
       </div>
