@@ -20,7 +20,7 @@
      timeline:value('timing'),budget:value('budget'),
      message:value('message'),website:value('website')
    };
-   status.textContent='Sending your project enquiry securely…';
+   status.textContent='Sending your message…';
    output.hidden=true;
    button.disabled=true;button.textContent='Sending…';
    let accepted=false;
@@ -34,15 +34,15 @@
      await sendEnquiry(values);
      accepted=true;
      form.reset();
-     status.textContent='Enquiry accepted. Thank you for getting in touch with MACHO.';
+     status.textContent='Enquiry accepted. Thanks for contacting MACHO.';
      button.textContent='Send another enquiry ↗';
      showEnquirySuccess();
    }catch(error){
      if(accepted){
-       status.textContent='Your enquiry was accepted by our email service. Thank you — MACHO will review your message and reply by email.';
+       status.textContent='Our email service has your message. Thank you — MACHO will review your message and reply by email.';
        return;
      }
-     status.textContent=error?.message||'The enquiry could not be sent. Your details are still in the form.';
+     status.textContent=error?.message||'We could not send your message. Your details are still in the form.';
      const wa=document.getElementById('macho-whatsapp-link');
      if(wa){
        const brief=['MACHO PROJECT ENQUIRY','Name: '+values.name,'Email: '+values.email,
@@ -51,7 +51,7 @@
        wa.href='https://wa.me/2349160956794?text='+encodeURIComponent(brief);
        output.hidden=false;
      }
-     button.textContent='Try sending again ↗';
+     button.textContent='Try again ↗';
    }finally{button.disabled=false}
  });
 })();

@@ -70,15 +70,15 @@
      form.innerHTML=[
        '<p class="macho-modal-eyebrow">START A PROJECT</p>',
        '<h2 id="macho-quick-title">Let’s build something useful.</h2>',
-       '<p>Tell me about your project and send your enquiry directly from this website.</p>',
+       '<p>Tell me what you need. You can send your message right here.</p>',
        '<div class="macho-quick-fields">',
        '<label>Your name <input name="name" autocomplete="name" required maxlength="120" placeholder="Your name"></label>',
        '<label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com"></label>',
        '<label>Service <select name="service"><option>Not sure yet</option><option>Shopify & ecommerce</option><option>Mobile app development</option><option>Website development</option><option>Wix Studio & Velo</option><option>CRM & integrations</option><option>AI & automation</option></select></label>',
        '<label>Timeline <select name="timeline"><option>Flexible / undecided</option><option>As soon as possible</option><option>Within a month</option><option>1–3 months</option></select></label>',
-       '<label class="macho-field-full">What should we build or fix? <textarea name="message" rows="4" required minlength="10" maxlength="3000" placeholder="Your goals, challenges and project details"></textarea></label>',
+       '<label class="macho-field-full">What do you need help with? <textarea name="message" rows="4" required minlength="10" maxlength="3000" placeholder="Tell me what you want to build or fix"></textarea></label>',
        '</div><label class="macho-hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">Your website <input name="website" tabindex="-1" autocomplete="off"></label><button class="macho-primary-action" type="submit">Send enquiry ↗</button>',
-       '<p class="macho-privacy-note">Your project details are sent securely to MACHO when you submit. <a href="/privacy">Privacy</a> · <a href="/contact">Full contact page</a></p>',
+       '<p class="macho-privacy-note">Your project details are sent to MACHO when you click Send. <a href="/privacy">Privacy</a> · <a href="/contact">Full contact page</a></p>',
        '<div class="macho-send-options" hidden aria-live="polite"></div>'
      ].join('');
      form.addEventListener('submit',async e=>{
@@ -93,7 +93,7 @@
        };
        const options=$('.macho-send-options',form);
        options.replaceChildren();
-       const notice=document.createElement('p');notice.textContent='Sending your enquiry securely…';
+       const notice=document.createElement('p');notice.textContent='Sending your message…';
        options.append(notice);options.hidden=false;
        button.disabled=true;button.textContent='Sending…';
        let accepted=false;
@@ -111,19 +111,19 @@
          showEnquirySuccess();
        }catch(error){
          if(accepted){
-           notice.textContent='Your enquiry has been accepted by our email service. Thank you for contacting MACHO.';
+           notice.textContent='Our email service has your message. Thank you for contacting MACHO.';
            options.hidden=false;
            return;
          }
-         notice.textContent=error?.message||'We could not send your enquiry. Your details remain in the form.';
+         notice.textContent=error?.message||'We could not send your message. Your details are still in the form.';
          const brief=['MACHO PROJECT ENQUIRY','Name: '+values.name,'Email: '+values.email,
            'Service: '+values.service,'Timeline: '+values.timeline,'','Project details:',values.message].join('\n');
          const wa=document.createElement('a');
          wa.href='https://wa.me/2349160956794?text='+encodeURIComponent(brief);
          wa.className='macho-outline-action';wa.target='_blank';wa.rel='noopener noreferrer';
-         wa.textContent='Use WhatsApp instead ↗';
+         wa.textContent='Send with WhatsApp ↗';
          options.append(wa);
-         button.textContent='Try sending again ↗';
+         button.textContent='Try again ↗';
        }finally{button.disabled=false}
      });
      contact.panel.append(form);
