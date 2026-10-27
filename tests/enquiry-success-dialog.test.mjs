@@ -12,7 +12,7 @@ test('enquiry success appears as a modal, not a new page redirect',()=>{
  assert.match(module,/showModal\(\)/);
  assert.match(module,/macho-success-close/);
  assert.match(module,/macho-success-steps/);
- assert.match(module,/Your message/);
+ assert.match(module,/Thanks!/);
  assert.match(module,/email service/);
  assert.match(css,/max-width:1120px/);
  assert.match(css,/@media\(max-width:760px\)/);
