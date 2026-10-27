@@ -19,12 +19,26 @@ test('All site content uses the MACHO brand emails, not the former Gmail contact
   }
  }
 });
-test('Public contact addresses and form recipients stay deliberately distinct',()=>{
+test('MACHO contact and popup submit securely while public direct email links remain',()=>{
  assert.match(read('main/index.html'),/mailto:hello@macho\.studio/);
  assert.match(read('shopify/index.html'),/mailto:hello@macho\.studio/);
- assert.match(read('main/contact.html'),/href="mailto:contact@macho\.studio" id="macho-email-link"/);
+ assert.match(read('main/contact.html'),/id="macho-static-contact"/);
+ assert.match(read('main/contact.html'),/Send enquiry/);
+ assert.doesNotMatch(read('main/contact.html'),/id="macho-email-link"/);
+ const handoff=read('main/assets/js/contact-handoff.js');
+ const popup=read('main/assets/js/launch-ready.js');
+ const api=read('main/assets/js/enquiry-api.js');
+ const worker=read('main/_worker.js');
+ assert.match(handoff,/sendEnquiry\(values\)/);
+ assert.match(popup,/sendEnquiry\(values\)/);
+ assert.doesNotMatch(handoff,/mailto:/);
+ assert.doesNotMatch(popup,/mailto:contact@macho\.studio/);
+ assert.match(api,/fetch\('\/api\/enquiry'/);
+ assert.match(worker,/if\(path==="\/api\/enquiry"\)return sendEnquiry\(request,env\)/);
+ assert.match(worker,/env\.EMAIL\.send/);
+ assert.match(worker,/env\.RESEND_API_KEY/);
  assert.match(read('shopify/contact/index.html'),/id="send-email"[^>]*href="mailto:contact@macho\.studio"/);
- for(const path of ['main/assets/js/contact-handoff.js','main/assets/js/launch-ready.js','shopify/assets/site.js','shopify/assets/store-check.js']){
+ for(const path of ['shopify/assets/site.js','shopify/assets/store-check.js']){
   assert.match(read(path),/mailto:contact@macho\.studio/,path);
  }
 });
