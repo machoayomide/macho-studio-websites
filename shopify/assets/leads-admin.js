@@ -9,13 +9,13 @@ $('#leads-login').addEventListener('submit',async e=>{
  }while(cursor);
  const table=document.createElement('table'),head=document.createElement('tr');
  for(const text of ['Email','Permission','Saved','Report']){const th=document.createElement('th');th.textContent=text;head.append(th)}table.append(head);
- for(const row of rows){const tr=document.createElement('tr');for(const text of [row.email,row.kind==='newsletter'?(row.newsletter?'Newsletter — active':'Newsletter — unsubscribed'):'Store follow-up only',row.updatedAt,row.report||'—']){const td=document.createElement('td');td.textContent=text;tr.append(td)}table.append(tr)}
+ for(const row of rows){const tr=document.createElement('tr');for(const text of [row.email,row.kind==='newsletter'?(row.newsletter?'Newsletter — active':'Newsletter — unsubscribed'):row.kind==='demo'?'Demo request — '+row.service:'Store follow-up only',row.updatedAt,row.kind==='demo'?[row.name,row.store,row.message].filter(Boolean).join(' · '):row.report||'—']){const td=document.createElement('td');td.textContent=text;tr.append(td)}table.append(tr)}
  $('#lead-list').append(table);status.textContent=rows.length+' saved records.';$('#export-newsletter').hidden=false;$('#export-reviews').hidden=false;
  }catch(error){rows=[];status.textContent=error.message}finally{key='';}
 });
 function csvCell(value){let s=String(value??'');if(/^[=+@\-\t\r]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"'}
-function download(kind){const newsletter=kind==='newsletter',selected=rows.filter(r=>newsletter?r.kind==='newsletter'&&r.newsletter===true:r.kind==='store-check');
- const columns=newsletter?['email','newsletterConsentAt','source','consentVersion','newsletterConsent','unsubscribeUrl']:['email','updatedAt','source','consentVersion','followupConsent','report'];
+function download(kind){const newsletter=kind==='newsletter',selected=rows.filter(r=>newsletter?r.kind==='newsletter'&&r.newsletter===true:['store-check','demo'].includes(r.kind));
+ const columns=newsletter?['email','newsletterConsentAt','source','consentVersion','newsletterConsent','unsubscribeUrl']:['email','kind','name','service','store','message','updatedAt','source','consentVersion','followupConsent','report'];
  const lines=[columns,...selected.map(row=>columns.map(k=>k==='unsubscribeUrl'?location.origin+'/newsletter/unsubscribe/?token='+row.unsubscribeToken:row[k]))];
  const blob=new Blob(['\uFEFF'+lines.map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='macho-'+kind+'-'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(url);
 }

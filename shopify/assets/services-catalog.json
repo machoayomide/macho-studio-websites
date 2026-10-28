@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "custom-themes",
+    "title": "Custom Themes & Sections",
+    "description": "A Shopify theme that fits your brand and is easy to update."
+  },
+  {
+    "slug": "figma-to-shopify",
+    "title": "Figma to Shopify",
+    "description": "Turn your design into a working Shopify store."
+  },
+  {
+    "slug": "fixes-speed",
+    "title": "Fixes & Speed",
+    "description": "Fix broken sections and investigate slow pages."
+  },
+  {
+    "slug": "b2b-wholesale",
+    "title": "B2B & Wholesale",
+    "description": "Trade accounts, catalogs, and bulk buying."
+  },
+  {
+    "slug": "checkout-functions",
+    "title": "Checkout & Shopify Functions",
+    "description": "Discounts and checkout rules that fit your Shopify plan."
+  },
+  {
+    "slug": "migrations",
+    "title": "Store Migrations",
+    "description": "Move your catalog, customers, and links with careful checks."
+  },
+  {
+    "slug": "integrations",
+    "title": "Integrations & Inventory Sync",
+    "description": "Connect stock, orders, marketplaces, and business tools."
+  },
+  {
+    "slug": "shopify-seo",
+    "title": "Shopify SEO",
+    "description": "Help people find your products and collections in search."
+  },
+  {
+    "slug": "conversion-optimization",
+    "title": "Conversion & Customer Experience",
+    "description": "Find what makes shopping hard before paying for a redesign."
+  },
+  {
+    "slug": "backend-fixes",
+    "title": "Backend & App Fixes",
+    "description": "Investigate broken apps, orders, and API connections."
+  },
+  {
+    "slug": "landing-pages",
+    "title": "Landing Pages & Product Pages",
+    "description": "Give each offer a page that makes the next step clear."
+  },
+  {
+    "slug": "product-finders",
+    "title": "Product Finders & Store Search",
+    "description": "Help shoppers find the right product."
+  },
+  {
+    "slug": "email-marketing",
+    "title": "Klaviyo & Email Automation",
+    "description": "Keep the conversation going after a visit."
+  },
+  {
+    "slug": "analytics-tracking",
+    "title": "GA4 & Store Tracking",
+    "description": "See where visits turn into orders."
+  },
+  {
+    "slug": "shipping-fulfillment",
+    "title": "Shipping & Fulfillment",
+    "description": "Move orders from checkout to dispatch."
+  },
+  {
+    "slug": "catalog-setup",
+    "title": "Products, Variants & Catalog Setup",
+    "description": "Make your product catalog easier to manage."
+  },
+  {
+    "slug": "markets-international",
+    "title": "Shopify Markets & Local Selling",
+    "description": "Make shopping clearer across countries."
+  },
+  {
+    "slug": "ongoing-support",
+    "title": "Shopify Support & Maintenance",
+    "description": "Keep your store ready for the next change."
+  }
+]

@@ -83,6 +83,7 @@ function readiness(env){
 }
 /* Permission-based leads are isolated from the anonymous activity stream. */
 const LEAD_CONSENT_VERSION='2026-10-28';
+const DEMO_SERVICES=["custom-themes", "figma-to-shopify", "fixes-speed", "b2b-wholesale", "checkout-functions", "migrations", "integrations", "shopify-seo", "conversion-optimization", "backend-fixes", "landing-pages", "product-finders", "email-marketing", "analytics-tracking", "shipping-fulfillment", "catalog-setup", "markets-international", "ongoing-support", "not-sure"];
 const leadEmail=value=>typeof value==='string'&&value.length<=254&&/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value)&&!/[\r\n]/.test(value);
 async function leadHash(text){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(digest)].map(n=>n.toString(16).padStart(2,'0')).join('')}
 async function leadAdmin(request,env){
@@ -114,9 +115,11 @@ async function saveLead(request,env){
  let input;try{const raw=await request.text();if(raw.length>15000)return response({error:'Request too large'},413);input=JSON.parse(raw)}catch{return response({error:'Invalid request'},400)}
  if(!input||typeof input!=='object'||Array.isArray(input)||input.website)return response({error:'Unable to save this request'},400);
  const email=typeof input.email==='string'?input.email.trim().toLowerCase():'';
- if(!leadEmail(email)||!['newsletter','store-check'].includes(input.kind)||
-   (input.kind==='newsletter'&&input.newsletter!==true)||(input.kind==='store-check'&&input.followup!==true)||
+ if(!leadEmail(email)||!['newsletter','store-check','demo'].includes(input.kind)||
+   (input.kind==='newsletter'&&input.newsletter!==true)||(['store-check','demo'].includes(input.kind)&&input.followup!==true)||
    (input.report!==undefined&&(typeof input.report!=='string'||input.report.length>10000)))return response({error:'Please check your email and permission choices.'},400);
+ const demoFields=input.kind==='demo'?{name:typeof input.name==='string'?input.name.trim():'',service:input.service,store:typeof input.store==='string'?input.store.trim():'',message:typeof input.message==='string'?input.message.trim():''}:null;
+ if(demoFields&&(demoFields.name.length<2||demoFields.name.length>120||!DEMO_SERVICES.includes(demoFields.service)||demoFields.store.length>500||demoFields.message.length<10||demoFields.message.length>2000))return response({error:'Please add your name, a service, and at least 10 characters about the demo.'},400);
  if(!env.ACTIVITY_LOG)return response({error:'Email signup is unavailable. Please contact hello@macho.studio.'},503);
  try{
   const ip=request.headers.get('CF-Connecting-IP'),hour=Math.floor(Date.now()/3600000);
@@ -124,6 +127,10 @@ async function saveLead(request,env){
   const count=rateKey?Number(await env.ACTIVITY_LOG.get(rateKey)||0):0;
   if(count>=10)return response({error:'Too many signups. Please try again later.'},429);
   const now=new Date().toISOString();
+  if(input.kind==='demo'){
+   const id=crypto.randomUUID(),key='lead:demo:'+id;
+   await env.ACTIVITY_LOG.put(key,JSON.stringify({email,kind:'demo',followup:true,newsletter:false,...demoFields,createdAt:now,updatedAt:now,source:'/request-demo/',consentVersion:LEAD_CONSENT_VERSION,followupConsent:'Please contact me about my requested Shopify demo.'}),{expirationTtl:31536000});
+  }
   if(input.kind==='store-check'){
    const key='lead:review:'+await leadHash(email),old=await env.ACTIVITY_LOG.get(key,'json');
    const record={email,kind:'store-check',followup:true,newsletter:false,
@@ -136,7 +143,7 @@ async function saveLead(request,env){
    const key='lead:newsletter:'+await leadHash(email),old=await env.ACTIVITY_LOG.get(key,'json');
    const token=old?.unsubscribeToken||crypto.randomUUID();
    const record={email,kind:'newsletter',followup:false,newsletter:true,
-    createdAt:old?.createdAt||now,updatedAt:now,source:input.kind==='store-check'?'/store-check/':'newsletter form',
+    createdAt:old?.createdAt||now,updatedAt:now,source:input.kind==='store-check'?'/store-check/':input.kind==='demo'?'/request-demo/':'newsletter form',
     consentVersion:LEAD_CONSENT_VERSION,newsletterConsent:'Yes, send me the MACHO newsletter. I can unsubscribe at any time.',
     newsletterConsentAt:now,unsubscribeToken:token};
    await env.ACTIVITY_LOG.put('lead-token:'+token,key);
