@@ -22,7 +22,8 @@ const form=document.querySelector('#project-form');if(form){
 ;(()=>{
  const menuItems=[['Shopify SEO','shopify-seo'],['Conversion & UX','conversion-optimization'],['Backend Fixes','backend-fixes'],['Custom Themes','custom-themes'],['Figma to Shopify','figma-to-shopify'],['Migrations','migrations'],['Integrations','integrations'],['B2B and Wholesale','b2b-wholesale'],['Fixes and Speed','fixes-speed'],['Checkout and Functions','checkout-functions']];
  document.querySelectorAll('header.site-header #primary-nav').forEach(nav=>{
-  nav.innerHTML='<a class="nav-store-check" href="/store-check/">Check My Store ↗</a><details class="studio-service-menu"><summary>Services</summary><div class="studio-service-menu-panel"><a href="/services/">All services</a>'+menuItems.map(([name,slug])=>'<a href="/services/'+slug+'/">'+name+'</a>').join('')+'</div></details><a href="/work/">Work</a><a href="/process/">Process</a><a href="/about/">About</a><a href="/faqs/">FAQs</a><a href="/contact/">Contact</a>';
+  if(!nav.querySelector('.studio-service-menu'))nav.innerHTML='<a class="nav-store-check" href="/store-check/">Check My Store ↗</a><details class="studio-service-menu"><summary>Services</summary><div class="studio-service-menu-panel"><a href="/services/">All services</a>'+menuItems.map(([name,slug])=>'<a href="/services/'+slug+'/">'+name+'</a>').join('')+'</div></details><a href="/work/">Work</a><a href="/process/">Process</a><a href="/about/">About</a><a href="/faqs/">FAQs</a><a href="/contact/">Contact</a>';
+  nav.querySelectorAll('a').forEach(a=>{if(a.pathname===location.pathname)a.setAttribute('aria-current','page')});
   nav.addEventListener('click',e=>{if(!e.target.closest('a'))return;nav.classList.remove('open');document.body.classList.remove('menu-open');const button=document.querySelector('.menu-toggle');if(button)button.setAttribute('aria-expanded','false')});
   document.addEventListener('click',e=>{const detail=nav.querySelector('details');if(detail&&!detail.contains(e.target))detail.open=false});
  });
@@ -39,7 +40,7 @@ window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFr
  document.querySelectorAll('footer .big-brand').forEach(el=>el.innerHTML='MACHO<span>.</span>');
  document.querySelectorAll('footer .footer-bottom > span:first-child').forEach(el=>el.textContent='© 2026 MACHO · Independent development.');
  document.querySelectorAll('footer .footer-brand > p').forEach(el=>el.textContent='I build and fix Shopify stores, move stores, and connect tools.');
- document.querySelectorAll('footer a[href*="macho.studio"]').forEach(a=>a.textContent='Explore MACHO ↗');
+ document.querySelectorAll('footer a[href^="https://macho.studio"]').forEach(a=>a.textContent='Explore MACHO ↗');
  document.querySelectorAll('footer .studio-disclaimer').forEach(el=>el.textContent='Shopify is a trademark of Shopify Inc. MACHO is independent and is not run by Shopify.');
 })();
 

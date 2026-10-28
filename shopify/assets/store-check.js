@@ -1,5 +1,5 @@
 /* MACHO Store Check — transparent, client-side rule-based recommendations.
- * No tracking, external analytics, API calls or automatic submission.
+ * Quiz answers stay local. Optional follow-up forms submit only with permission.
  * Estimates are self-reported, never treated as verified store diagnostics.
  */
 (()=>{'use strict';
@@ -139,6 +139,7 @@ function finish(){
   card.append(priority,heading,why,desc,link);cards.append(card)
  });
  const text=summary(recs)+'\n\nINITIAL REPORT (SELF-REPORTED SYMPTOMS):\n'+notes.map((n,i)=>(i+1)+'. '+n.label+'\n  '+n.observation+'\n  To verify: '+n.verify).join('\n')+'\n\nIMPORTANT: A MACHO expert must review the real store and its analytics/technical setup before determining which services are needed, if any. No diagnosis or quote has been made.';
+ app.dataset.report=text;
  const copy=$('#check-copy');copy.onclick=async()=>{try{await navigator.clipboard.writeText(text);copy.textContent='COPIED ✓';setTimeout(()=>copy.textContent='COPY MY PLAN ↗',2600)}catch(e){copy.textContent='COPY NOT AVAILABLE';setTimeout(()=>copy.textContent='COPY MY PLAN ↗',2600)}};
  const contact=$('#check-contact');contact.href='/contact/?assessment=1&service='+encodeURIComponent(recs[0].slug);
  contact.onclick=()=>{try{sessionStorage.setItem('macho_shopify_assessment_v1',JSON.stringify({summary:text,created:Date.now(),primary:recs[0].slug}))}catch(e){/* optional transfer; users can still copy their plan */}};

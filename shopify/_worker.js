@@ -81,6 +81,73 @@ function readiness(env){
  const storage=Boolean(env.ACTIVITY_LOG),notifications=Boolean(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID),dashboard=Boolean(env.ADMIN_DASHBOARD_KEY);
  return {enabled:storage||notifications,storage,notifications,dashboard,missing:[...(!storage?['ACTIVITY_LOG']:[]),...(!dashboard?['ADMIN_DASHBOARD_KEY']:[]),...(!env.TELEGRAM_BOT_TOKEN?['TELEGRAM_BOT_TOKEN']:[]),...(!env.TELEGRAM_CHAT_ID?['TELEGRAM_CHAT_ID']:[])]};
 }
+/* Permission-based leads are isolated from the anonymous activity stream. */
+const LEAD_CONSENT_VERSION='2026-10-28';
+const leadEmail=value=>typeof value==='string'&&value.length<=254&&/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value)&&!/[\r\n]/.test(value);
+async function leadHash(text){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(digest)].map(n=>n.toString(16).padStart(2,'0')).join('')}
+async function leadAdmin(request,env){
+ if(request.method!=='GET')return response({error:'Method not allowed'},405);
+ const token=(request.headers.get('Authorization')||'').replace(/^Bearer\s+/i,'');
+ if(!authEqual(token,env.ADMIN_DASHBOARD_KEY))return response({error:'Unauthorized'},401);
+ if(!env.ACTIVITY_LOG)return response({error:'Lead storage is unavailable'},503);
+ const cursor=new URL(request.url).searchParams.get('cursor')||undefined;
+ const page=await env.ACTIVITY_LOG.list({prefix:'lead:',limit:100,cursor});
+ const rows=(await Promise.all(page.keys.map(row=>env.ACTIVITY_LOG.get(row.name,'json')))).filter(Boolean);
+ return response({leads:rows,cursor:page.list_complete?'':page.cursor||'',complete:page.list_complete!==false});
+}
+async function unsubscribeLead(request,env){
+ if(request.method!=='POST')return response({error:'Method not allowed'},405);
+ if(!sameOrigin(request))return response({error:'Request origin not accepted'},403);
+ if(!env.ACTIVITY_LOG)return response({error:'Please email hello@macho.studio to unsubscribe.'},503);
+ let input;try{const raw=await request.text();if(raw.length>300)return response({error:'Invalid request'},400);input=JSON.parse(raw)}catch{return response({error:'Invalid request'},400)}
+ if(!input||typeof input.token!=='string'||!/^[a-f0-9-]{36}$/.test(input.token))return response({error:'Invalid unsubscribe link'},400);
+ try{
+  const key=await env.ACTIVITY_LOG.get('lead-token:'+input.token);
+  if(key){const record=await env.ACTIVITY_LOG.get(key,'json');if(record){record.newsletter=false;record.unsubscribedAt=new Date().toISOString();await env.ACTIVITY_LOG.put(key,JSON.stringify(record));}}
+  return response({ok:true});
+ }catch{return response({error:'Please retry or email hello@macho.studio to unsubscribe.'},502)}
+}
+async function saveLead(request,env){
+ if(request.method!=='POST')return response({error:'Method not allowed'},405);
+ if(!sameOrigin(request))return response({error:'Request origin not accepted'},403);
+ if(!(request.headers.get('Content-Type')||'').toLowerCase().startsWith('application/json'))return response({error:'JSON required'},415);
+ let input;try{const raw=await request.text();if(raw.length>15000)return response({error:'Request too large'},413);input=JSON.parse(raw)}catch{return response({error:'Invalid request'},400)}
+ if(!input||typeof input!=='object'||Array.isArray(input)||input.website)return response({error:'Unable to save this request'},400);
+ const email=typeof input.email==='string'?input.email.trim().toLowerCase():'';
+ if(!leadEmail(email)||!['newsletter','store-check'].includes(input.kind)||
+   (input.kind==='newsletter'&&input.newsletter!==true)||(input.kind==='store-check'&&input.followup!==true)||
+   (input.report!==undefined&&(typeof input.report!=='string'||input.report.length>10000)))return response({error:'Please check your email and permission choices.'},400);
+ if(!env.ACTIVITY_LOG)return response({error:'Email signup is unavailable. Please contact hello@macho.studio.'},503);
+ try{
+  const ip=request.headers.get('CF-Connecting-IP'),hour=Math.floor(Date.now()/3600000);
+  const rateKey=ip?'rl:lead:'+hour+':'+await leadHash(hour+':'+ip):null;
+  const count=rateKey?Number(await env.ACTIVITY_LOG.get(rateKey)||0):0;
+  if(count>=10)return response({error:'Too many signups. Please try again later.'},429);
+  const now=new Date().toISOString();
+  if(input.kind==='store-check'){
+   const key='lead:review:'+await leadHash(email),old=await env.ACTIVITY_LOG.get(key,'json');
+   const record={email,kind:'store-check',followup:true,newsletter:false,
+    report:typeof input.report==='string'?input.report:'',createdAt:old?.createdAt||now,updatedAt:now,
+    source:'/store-check/',consentVersion:LEAD_CONSENT_VERSION,
+    followupConsent:'Please contact me about my Shopify store.'};
+   await env.ACTIVITY_LOG.put(key,JSON.stringify(record),{expirationTtl:31536000});
+  }
+  if(input.newsletter===true){
+   const key='lead:newsletter:'+await leadHash(email),old=await env.ACTIVITY_LOG.get(key,'json');
+   const token=old?.unsubscribeToken||crypto.randomUUID();
+   const record={email,kind:'newsletter',followup:false,newsletter:true,
+    createdAt:old?.createdAt||now,updatedAt:now,source:input.kind==='store-check'?'/store-check/':'newsletter form',
+    consentVersion:LEAD_CONSENT_VERSION,newsletterConsent:'Yes, send me the MACHO newsletter. I can unsubscribe at any time.',
+    newsletterConsentAt:now,unsubscribeToken:token};
+   await env.ACTIVITY_LOG.put('lead-token:'+token,key);
+   await env.ACTIVITY_LOG.put(key,JSON.stringify(record));
+  }
+  // The lead is durable already; an optional throttle write must not turn success into failure.
+  if(rateKey){try{await env.ACTIVITY_LOG.put(rateKey,String(count+1),{expirationTtl:3700})}catch{}}
+  return response({ok:true,saved:true},201);
+ }catch{return response({error:'We could not save your email. Please retry or contact hello@macho.studio.'},502)}
+}
+
 export default {
  async fetch(request,env,ctx){
   const requestedUrl=new URL(request.url);
@@ -93,6 +160,11 @@ export default {
     return Response.redirect(requestedUrl.toString(),301);
   }
   const path=requestedUrl.pathname;
+  if(path==='/api/leads/ready')return response({storage:Boolean(env.ACTIVITY_LOG),admin:Boolean(env.ADMIN_DASHBOARD_KEY)});
+  if(path==='/api/leads')return saveLead(request,env);
+  if(path==='/api/leads/report')return leadAdmin(request,env);
+  if(path==='/api/leads/unsubscribe')return unsubscribeLead(request,env);
+  if(path.startsWith('/api/leads/'))return response({error:'Not found'},404);
   if(path==="/api/activity/ready")return response(readiness(env));
   if(path==="/api/activity/test")return testNotification(request,env,ctx);
   if(path==="/api/activity")return event(request,env,ctx);

@@ -1,0 +1,4 @@
+(()=>{'use strict';const token=new URLSearchParams(location.search).get('token'),button=document.getElementById('unsubscribe'),status=document.getElementById('unsubscribe-status');
+if(!token){button.hidden=true;status.textContent='Open your personal unsubscribe link from a newsletter, or email MACHO below.';return}
+button.addEventListener('click',async()=>{button.disabled=true;try{const res=await fetch('/api/leads/unsubscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token})});const data=await res.json();if(!res.ok||!data.ok)throw Error(data.error||'Please try again.');status.textContent='You have been unsubscribed. You will no longer receive the MACHO newsletter.';button.hidden=true;history.replaceState(null,'',location.pathname)}catch(error){status.textContent=error.message;button.disabled=false}});
+})();
