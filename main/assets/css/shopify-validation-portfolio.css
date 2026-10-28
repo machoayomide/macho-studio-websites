@@ -1,0 +1,26 @@
+/* MACHO: Shopify validation application portfolio — original UI illustration. */
+.macho-validation-art{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;min-height:100%;width:100%;box-sizing:border-box;padding:clamp(22px,3.1vw,46px);background:radial-gradient(circle at 83% 20%,rgba(99,190,151,.16),transparent 42%),linear-gradient(130deg,#10263b,#071722 80%);color:#f2f6f3;overflow:hidden;font-family:inherit}
+.macho-validation-art:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 95%,rgba(255,255,255,.035) 95%),linear-gradient(0deg,transparent 95%,rgba(255,255,255,.035) 95%);background-size:34px 34px;opacity:.24;pointer-events:none;z-index:-1}
+.macho-validation-art__top,.macho-validation-art__foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.macho-validation-art__mark{font-size:11px;font-weight:800;letter-spacing:.18em;color:#acd8c0}
+.macho-validation-art__state{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(161,221,189,.38);padding:7px 10px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:.07em;color:#c1ecd1}
+.macho-validation-art__state:before{content:"";width:6px;height:6px;border-radius:50%;background:#81caa5}
+.macho-validation-art__middle{display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:clamp(16px,2vw,34px);margin:20px 0}
+.macho-validation-art__title{font-size:clamp(28px,4vw,62px);line-height:.99;font-weight:800;letter-spacing:-.06em}
+.macho-validation-art__title em{font-style:normal;color:#87d1a5}
+.macho-validation-art__rules{display:flex;flex-direction:column;gap:9px;min-width:0}
+.macho-validation-art__rule{display:flex;align-items:center;gap:10px;background:rgba(247,253,248,.09);border:1px solid rgba(207,237,218,.18);padding:11px 12px;border-radius:10px}
+.macho-validation-art__symbol{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;color:#a9eed0;background:rgba(135,209,165,.17);font-size:15px;font-weight:800;flex:none}
+.macho-validation-art__rule span:last-child{min-width:0;display:flex;flex-direction:column;gap:2px}
+.macho-validation-art__rule strong{font-size:clamp(10px,1.1vw,14px);line-height:1.25;color:#f1f7f4}
+.macho-validation-art__rule small{font-size:clamp(9px,.82vw,11px);color:#adbdc6;line-height:1.35}
+.macho-validation-art__foot{border-top:1px solid rgba(204,235,217,.24);padding-top:13px;font-weight:700;font-size:10px;letter-spacing:.13em;color:#aebfc5}
+.case-visual .macho-validation-art{height:100%;transition:filter .3s ease}
+.case-visual:hover .macho-validation-art{filter:brightness(1.09)}
+.macho-validation-art--hero{min-height:380px;border-radius:14px}
+.macho-validation-art--hero .macho-validation-art__middle{grid-template-columns:1fr 1fr}
+.macho-validation-art--hero .macho-validation-art__title{font-size:clamp(44px,6vw,92px)}
+.macho-validation-art--hero .macho-validation-art__rule strong{font-size:15px}
+.macho-validation-art--hero .macho-validation-art__rule small{font-size:12px}
+@media(max-width:720px){.macho-validation-art{padding:22px}.macho-validation-art__middle{grid-template-columns:1fr 1.15fr;gap:12px}.macho-validation-art__title{font-size:clamp(27px,6vw,41px)}.macho-validation-art__rules{gap:6px}.macho-validation-art__rule{padding:8px;gap:7px}.macho-validation-art__rule strong{font-size:10px}.macho-validation-art__rule small{font-size:9px}.macho-validation-art__symbol{width:20px;height:20px}.macho-validation-art--hero .macho-validation-art__middle{grid-template-columns:1fr}.macho-validation-art--hero{min-height:430px}.macho-validation-art--hero .macho-validation-art__title{font-size:56px}.macho-validation-art__mark,.macho-validation-art__foot{font-size:9px}}
+@media(max-width:380px){.macho-validation-art__middle{grid-template-columns:1fr}.macho-validation-art__title{font-size:38px}.macho-validation-art__rule{padding:7px 10px}}
