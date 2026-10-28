@@ -20,7 +20,7 @@ const form=document.querySelector('#project-form');if(form){
 
 /* Shared site-wide navigation. Keeps all specialist routes discoverable. */
 ;(()=>{
- const menuItems=[['Shopify SEO','shopify-seo'],['Conversion & UX','conversion-optimization'],['Backend Fixes','backend-fixes'],['Custom Themes','custom-themes'],['Figma to Shopify','figma-to-shopify'],['Migrations','migrations'],['Integrations','integrations'],['B2B and Wholesale','b2b-wholesale'],['Fixes and Speed','fixes-speed'],['Checkout and Functions','checkout-functions']];
+ const menuItems=[["Custom Themes & Sections", "custom-themes"], ["Figma to Shopify", "figma-to-shopify"], ["Fixes & Speed", "fixes-speed"], ["B2B & Wholesale", "b2b-wholesale"], ["Checkout & Shopify Functions", "checkout-functions"], ["Store Migrations", "migrations"], ["Integrations & Inventory Sync", "integrations"], ["Shopify SEO", "shopify-seo"], ["Conversion & Customer Experience", "conversion-optimization"], ["Backend & App Fixes", "backend-fixes"], ["Landing Pages & Product Pages", "landing-pages"], ["Product Finders & Store Search", "product-finders"], ["Klaviyo & Email Automation", "email-marketing"], ["GA4 & Store Tracking", "analytics-tracking"], ["Shipping & Fulfillment", "shipping-fulfillment"], ["Products, Variants & Catalog Setup", "catalog-setup"], ["Shopify Markets & Local Selling", "markets-international"], ["Shopify Support & Maintenance", "ongoing-support"]];
  document.querySelectorAll('header.site-header #primary-nav').forEach(nav=>{
   if(!nav.querySelector('.studio-service-menu'))nav.innerHTML='<a class="nav-store-check" href="/store-check/">Check My Store ↗</a><details class="studio-service-menu"><summary>Services</summary><div class="studio-service-menu-panel"><a href="/services/">All services</a>'+menuItems.map(([name,slug])=>'<a href="/services/'+slug+'/">'+name+'</a>').join('')+'</div></details><a href="/work/">Work</a><a href="/process/">Process</a><a href="/about/">About</a><a href="/faqs/">FAQs</a><a href="/contact/">Contact</a>';
   nav.querySelectorAll('a').forEach(a=>{if(a.pathname===location.pathname)a.setAttribute('aria-current','page')});
@@ -68,7 +68,7 @@ window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFr
  const topic=typeof raw==='string'?raw.replace(/[<>]/g,'').slice(0,90):'';
  if(!topic)return;
  if(location.pathname.startsWith('/services/')){
-  document.querySelectorAll('a[href^="/contact/"]').forEach(a=>{
+  document.querySelectorAll('a[href^="/contact/"],a[href^="/request-demo/"]').forEach(a=>{
    const u=new URL(a.href,location.origin);u.searchParams.set('topic',topic);
    a.href=u.pathname+u.search;
   });

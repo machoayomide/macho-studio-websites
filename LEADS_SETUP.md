@@ -15,3 +15,7 @@ This change captures and exports contacts. It does not send newsletters or confi
 KV counters provide best-effort abuse throttling, not a globally atomic rate limiter. If spam becomes a problem, add a managed rate limit or Turnstile. Subscription records are kept independently of 7-day analytics retention; do not bulk-clear the lead prefixes when clearing activity.
 
 Validation: run `node --test tests/*.test.mjs`. Production storage availability was checked before implementation. Test an opt-in with an address you control, inspect the private dashboard after setting the key, export subscribers, then exercise its unsubscribe link. Never treat a mocked test as inbox delivery or a production signup check.
+
+## Demo requests
+
+`/request-demo/` saves a private `kind: demo` follow-up through the same `/api/leads` endpoint. Required fields are name, email, an allowed service, and a short description. The optional store URL and separate newsletter consent are preserved. Demo requests expire after 12 months and appear in the owner dashboard and combined demos/follow-ups CSV export. Requests do not book a time or send an automatic email. The existing owner admin-key setup applies; WhatsApp is an explicit alternate route. The primary service catalog now contains 18 services and the searchable catalog has 99 capabilities.
