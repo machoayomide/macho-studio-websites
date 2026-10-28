@@ -22,3 +22,5 @@
 
 .hero-actions .story-more{margin:0;min-height:44px;display:inline-flex;align-items:center}
 @media(max-width:360px){.macho-hero h1{font-size:24px}.hero-store-plan h2{font-size:16px!important}.hero-store-plan{padding:10px}.hero-store-plan>a+a{margin-top:14px}.hero-store-plan>a{padding-top:14px}}
+
+.studio-service-card h3,.service-feature-card h3,.capability-card h3{overflow-wrap:anywhere;hyphens:auto}
